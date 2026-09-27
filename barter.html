@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>物々交換の村｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">初級</span><span>お金の流れ／お金の歴史｜体験ゲーム</span></div>
+    <h1>物々交換の村</h1>
+    <p class="lede">お金がない村で、物と物をとりかえて、ほしい物を手に入れよう。そのあと「お金がある村」でも同じことをして、くらべてみよう。</p>
+  </div>
+
+  <div class="panel">
+    <div class="row" id="modes">
+      <button class="ghost sel" data-m="village">村で交換する</button>
+      <button class="ghost" data-m="puzzle">3人の交換パズル</button>
+    </div>
+  </div>
+
+  <!-- 村モード -->
+  <div id="village" style="display:grid;gap:16px">
+    <div class="panel" style="display:grid;gap:10px">
+      <div class="row" id="vworld">
+        <button class="ghost sel" data-w="barter">お金がない村</button>
+        <button class="ghost" data-w="money">お金がある村</button>
+      </div>
+      <div class="stats">
+        <div class="stat coin"><div class="k">あなたが持っている物</div><div class="v" id="have"></div></div>
+        <div class="stat"><div class="k">あなたがほしい物</div><div class="v">野菜</div></div>
+        <div class="stat" id="coinS" hidden><div class="k">あなたのお金</div><div class="v" id="coins"></div></div>
+        <div class="stat"><div class="k">話しかけた回数</div><div class="v" id="tries">0</div></div>
+      </div>
+      <div class="msg" id="vmsg"></div>
+    </div>
+    <div class="panel">
+      <h2>村の人（タップして交換をたのむ）</h2>
+      <div class="stats" id="people"></div>
+    </div>
+  </div>
+
+  <!-- パズルモード -->
+  <div id="puzzle" hidden style="display:grid;gap:16px">
+    <div class="panel" style="display:grid;gap:10px">
+      <p class="lede">Aさん・Bさん・Cさんの3人を、あなたが動かします。2人を選んで「1対1で交換」してみよう。全員がほしい物を手に入れられるかな？</p>
+      <div class="stats" id="trio"></div>
+      <div class="row">
+        <button id="swap">選んだ2人で交換</button>
+        <button id="ring" class="ghost" hidden>3人が同時にわたす</button>
+        <button id="shell" class="coin" hidden>みんなが受け取る「貝」を使う</button>
+        <button id="preset" class="ghost">はじめから</button>
+      </div>
+      <div class="msg" id="pmsg">2人を選ぼう。</div>
+      <ul class="log" id="plog"></ul>
+    </div>
+  </div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>お金がない村で、野菜を手に入れるまでに何回話しかけた？ お金がある村では？</li>
+      <li>交換がうまくいかなかったのは、どんなとき？</li>
+      <li>3人のパズルで、1対1の交換がうまくいかなかったのはなぜ？</li>
+      <li>お金があると、何がかんたんになった？</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜物のねだんは学習用の例です。</p>
+</div>
+
+<script>
+// ---- 村モード
+const VIL = [
+  { n: 'Aさん', has: '米', want: '魚' }, { n: 'Bさん', has: '服', want: '塩' },
+  { n: 'Cさん', has: '野菜', want: '米' }, { n: 'Dさん', has: '塩', want: '服' },
+  { n: 'Eさん', has: 'くつ', want: '野菜' },
+];
+let V, world = 'barter';
+function vreset() {
+  V = { have: '魚', coins: 0, tries: 0, done: false, ppl: VIL.map(p => ({ ...p })) };
+  vrender(world === 'barter' ? 'あなたは魚を持っていて、野菜がほしい。だれに話しかける？' : 'この村では、みんながお金（1まい＝同じねうち）を受け取ってくれる。魚1つ＝お金3まい、野菜1つ＝お金3まい。');
+}
+function vrender(t, cls = '') {
+  $('#have').textContent = V.have || 'なし'; $('#tries').textContent = V.tries + '回';
+  $('#coinS').hidden = world !== 'money'; $('#coins').textContent = V.coins + 'まい';
+  $('#vmsg').textContent = t; $('#vmsg').className = 'msg ' + cls;
+  $('#people').replaceChildren(...V.ppl.map((p, i) => el('button', { class: 'ghost', style: 'text-align:left;min-height:84px', onclick: () => talk(i) },
+    p.n, el('br'), el('span', { class: 'foot' }, `持っている：${p.has || 'なし'}`), el('br'), el('span', { class: 'foot' }, `ほしい：${p.want || 'なし'}`))));
+}
+function talk(i) {
+  if (V.done) return;
+  const p = V.ppl[i]; V.tries++;
+  if (world === 'barter') {
+    if (p.want === V.have && p.has) {
+      const got = p.has; p.has = V.have; p.want = null; V.have = got;
+      if (V.have === '野菜') { V.done = true; vrender(`${p.n}と交換して、野菜を手に入れた！（${V.tries}回）`, 'good'); return; }
+      vrender(`${p.n}と交換して「${got}」を手に入れた。野菜を持っている人は、これをほしがっているかな？`);
+    } else vrender(`${p.n}「${V.have}はいらないよ。わたしがほしいのは${p.want || '…特にない'}なんだ」`, 'bad');
+  } else {
+    if (V.have && p.want === V.have) { V.coins += 3; p.has = p.has; p.want = null; vrender(`${p.n}に${V.have}を売って、お金3まいを受け取った。`); V.have = null; }
+    else if (p.has === '野菜' && V.coins >= 3) { V.coins -= 3; V.have = '野菜'; p.has = null; V.done = true; vrender(`${p.n}からお金3まいで野菜を買った！（${V.tries}回）`, 'good'); }
+    else if (p.has === '野菜') vrender(`${p.n}「野菜はお金3まいだよ。お金はある？」`, 'bad');
+    else vrender(`${p.n}「${V.have ? V.have + 'はいらないな' : 'いまは売り買いするものがないよ'}」`, 'bad');
+  }
+}
+$$('#vworld button').forEach(b => b.onclick = () => { world = b.dataset.w; $$('#vworld button').forEach(x => x.classList.toggle('sel', x === b)); vreset(); });
+// ---- パズルモード
+const TRIO = [{ n: 'Aさん', has: '魚', want: '米' }, { n: 'Bさん', has: '米', want: '塩' }, { n: 'Cさん', has: '塩', want: '魚' }];
+let P, pick = [], fails = 0;
+function preset() { P = TRIO.map(p => ({ ...p, ok: false })); pick = []; fails = 0; $('#ring').hidden = $('#shell').hidden = true; $('#plog').replaceChildren(); prender('2人を選ぼう。'); }
+function prender(t, cls = '') {
+  $('#trio').replaceChildren(...P.map((p, i) => el('button', { class: 'ghost' + (pick.includes(i) ? ' sel' : ''), style: 'text-align:left;min-height:84px', onclick: () => { pick = pick.includes(i) ? pick.filter(x => x !== i) : [...pick, i].slice(-2); prender($('#pmsg').textContent); } },
+    p.n + (p.ok ? '（OK！）' : ''), el('br'), el('span', { class: 'foot' }, `持っている：${p.has}`), el('br'), el('span', { class: 'foot' }, `ほしい：${p.want}`))));
+  $('#pmsg').textContent = t; $('#pmsg').className = 'msg ' + cls;
+}
+$('#swap').onclick = () => {
+  if (pick.length < 2) { prender('2人を選んでね。', 'bad'); return; }
+  const [a, b] = pick.map(i => P[i]);
+  if (a.want === b.has && b.want === a.has) { [a.has, b.has] = [b.has, a.has]; }
+  else {
+    fails++;
+    const who = a.want !== b.has ? a : b, other = who === a ? b : a;
+    addLog($('#plog'), `${a.n}と${b.n}：${who.n}は${other.has}をほしくない`, 'bad');
+    prender(`交換できなかった。${who.n}は「${other.has}」がほしいわけじゃない。`, 'bad');
+    if (fails >= 3) { $('#ring').hidden = $('#shell').hidden = false; }
+    return;
+  }
+};
+$('#ring').onclick = () => { const hs = P.map(p => p.has); P.forEach((p, i) => { p.has = hs[(i + 1) % 3]; p.ok = p.has === p.want; }); prender('3人が同時に、となりの人にわたした。全員がほしい物を手に入れた！ でも、人数がもっと多いと？', 'good'); };
+$('#shell').onclick = () => { P.forEach(p => { p.has = p.want; p.ok = true; }); addLog($('#plog'), 'みんなが自分の物を「貝」1まいで売り、その貝でほしい物を買った', 'good'); prender('みんなが受け取る「貝」があると、1人ずつ売り買いできた！', 'good'); };
+$('#preset').onclick = preset;
+$$('#modes button').forEach(b => b.onclick = () => { $$('#modes button').forEach(x => x.classList.toggle('sel', x === b)); $('#village').hidden = b.dataset.m !== 'village'; $('#puzzle').hidden = b.dataset.m !== 'puzzle'; });
+vreset(); preset();
+</script>
+
+</body></html>

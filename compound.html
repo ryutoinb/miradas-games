@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>複利の雪だるま｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">中級</span><span>お金を育てる｜体験ゲーム</span></div>
+    <h1>複利の雪だるま</h1>
+    <p class="lede">増えた分にも、また利息がつく。これが複利です。年利・年数・始める年れいを変えて、お金の育ち方をくらべよう。数字はすべて例です。</p>
+  </div>
+
+  <div class="panel" style="display:grid;gap:12px">
+    <h2>① 単利と複利をくらべる</h2>
+    <div class="stats">
+      <div><label for="p0">はじめのお金：<b id="p0v" class="num"></b></label><input type="range" id="p0" min="10000" max="1000000" step="10000" value="100000"></div>
+      <div><label for="r">年利：<b id="rv" class="num"></b></label><input type="range" id="r" min="1" max="10" step="0.5" value="5"></div>
+      <div><label for="y">年数：<b id="yv" class="num"></b></label><input type="range" id="y" min="5" max="50" step="1" value="30"></div>
+      <div><label for="inf">物の値段の上がり方（1年）：<b id="infv" class="num"></b></label><input type="range" id="inf" min="0" max="4" step="0.5" value="0"></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="k">単利だと</div><div class="v" id="simple"></div></div>
+      <div class="stat good"><div class="k">複利だと</div><div class="v" id="comp"></div></div>
+      <div class="stat coin"><div class="k">複利の「今の買う力」にすると</div><div class="v" id="real"></div></div>
+    </div>
+    <canvas class="chart" id="chart" aria-label="単利と複利のグラフ"></canvas>
+    <p class="foot">「今の買う力」＝物の値段が上がった分をさし引いて、いまのお金にするといくら分の物が買えるか。</p>
+  </div>
+
+  <div class="panel" style="display:grid;gap:10px">
+    <h2>② 72の法則にちょうせん</h2>
+    <p class="lede">年利が何％なら、お金が2倍になるまで何年かかる？ 予想してから、ためしてみよう。</p>
+    <div class="row">
+      <label for="qr">年利</label>
+      <select id="qr"><option>2</option><option>3</option><option>4</option><option selected>6</option><option>8</option><option>9</option><option>12</option></select>
+      <span>％で、2倍になるのは</span>
+      <input type="number" id="guess" min="1" max="100" value="10" style="width:5em"><span>年後？</span>
+      <button id="try">ためす</button>
+    </div>
+    <div class="msg" id="qmsg">予想を入れて「ためす」を押そう。</div>
+    <ul class="log" id="qlog"></ul>
+  </div>
+
+  <div class="panel" style="display:grid;gap:10px">
+    <h2>③ 早く始める？ たくさん入れる？</h2>
+    <p class="lede">2人とも60才まで、毎年お金を入れて育てます。</p>
+    <div class="stats">
+      <div class="stat"><div class="k">Aさん</div><div class="v" style="font-size:15px">10才から毎年1万円</div></div>
+      <div class="stat"><div class="k">Bさん</div><div class="v" style="font-size:15px">30才から毎年2万円</div></div>
+    </div>
+    <div><label for="r2">年利：<b id="r2v" class="num"></b></label><input type="range" id="r2" min="0" max="8" step="0.5" value="4"></div>
+    <div class="stats">
+      <div class="stat"><div class="k">Aさんが入れた合計</div><div class="v" id="aIn"></div></div>
+      <div class="stat good"><div class="k">60才のAさん</div><div class="v" id="aOut"></div></div>
+      <div class="stat"><div class="k">Bさんが入れた合計</div><div class="v" id="bIn"></div></div>
+      <div class="stat good"><div class="k">60才のBさん</div><div class="v" id="bOut"></div></div>
+    </div>
+    <canvas class="chart" id="chart2" aria-label="AさんとBさんのグラフ"></canvas>
+  </div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>年利を2倍にすると、30年後のお金も2倍になった？ ならなかったなら、なぜ？</li>
+      <li>72の法則は、どんな計算で使えそう？ 自分の言葉でルールにしてみよう。</li>
+      <li>年利0％にすると、AさんとBさんはどうなった？ 年利を上げていくと？</li>
+      <li>物の値段の上がり方を入れると、「増えた」の見え方はどう変わった？</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜利息や物価の数字は学習用の例です。実際の預金や投資で、毎年同じ利回りになるとは限りません。</p>
+</div>
+
+<script>
+const yen = v => v >= 100000000 ? (v / 100000000).toFixed(2) + '億円' : v >= 10000 ? fmt(v / 10000) + '万円' : fmt(v) + '円';
+function draw1() {
+  const p0 = +$('#p0').value, r = +$('#r').value / 100, Y = +$('#y').value, inf = +$('#inf').value / 100;
+  $('#p0v').textContent = yen(p0); $('#rv').textContent = $('#r').value + '％'; $('#yv').textContent = Y + '年'; $('#infv').textContent = $('#inf').value + '％';
+  const s = [], c = [], re = [];
+  for (let t = 0; t <= Y; t++) { s.push(p0 * (1 + r * t)); c.push(p0 * Math.pow(1 + r, t)); re.push(p0 * Math.pow(1 + r, t) / Math.pow(1 + inf, t)); }
+  $('#simple').textContent = yen(s[Y]); $('#comp').textContent = yen(c[Y]); $('#real').textContent = yen(re[Y]);
+  const series = [{ label: '単利', color: tok('--muted'), data: s }, { label: '複利', color: tok('--accent'), data: c }];
+  if (inf > 0) series.push({ label: '複利（今の買う力）', color: tok('--coin'), data: re });
+  lineChart($('#chart'), series, { zero: true, fmt: v => yen(v), xlab: i => i + '年' });
+}
+$('#try').onclick = () => {
+  const r = +$('#qr').value / 100, g = +$('#guess').value;
+  let t = 0, v = 1; while (v < 2) { v *= 1 + r; t++; }
+  const diff = Math.abs(g - t);
+  $('#qmsg').textContent = `年利${$('#qr').value}％だと、${t}年で2倍になりました（予想は${g}年）。` + (diff <= 1 ? ' ほぼぴったり！' : '');
+  $('#qmsg').className = 'msg ' + (diff <= 1 ? 'good' : '');
+  addLog($('#qlog'), `年利${$('#qr').value}％ → ${t}年で2倍（予想 ${g}年）`, diff <= 1 ? 'good' : '');
+};
+function draw2() {
+  const r = +$('#r2').value / 100; $('#r2v').textContent = $('#r2').value + '％';
+  const A = [], B = []; let a = 0, b = 0;
+  for (let age = 10; age <= 60; age++) {
+    if (age < 60) { a = (a + 10000) * (1 + r); if (age >= 30) b = (b + 20000) * (1 + r); else b = 0; }
+    A.push(a); B.push(age >= 30 ? b : null);
+  }
+  $('#aIn').textContent = yen(10000 * 50); $('#aOut').textContent = yen(a);
+  $('#bIn').textContent = yen(20000 * 30); $('#bOut').textContent = yen(b);
+  lineChart($('#chart2'), [{ label: 'Aさん', color: tok('--accent'), data: A }, { label: 'Bさん', color: tok('--coin'), data: B }], { zero: true, fmt: v => yen(v), xlab: i => (i + 10) + '才' });
+}
+['p0', 'r', 'y', 'inf'].forEach(id => $('#' + id).addEventListener('input', draw1));
+$('#r2').addEventListener('input', draw2);
+window.addEventListener('resize', () => { draw1(); draw2(); });
+draw1(); draw2();
+</script>
+
+</body></html>

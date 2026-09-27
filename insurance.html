@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>保険の村｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">中級</span><span>保険ってなに？｜体験ゲーム</span></div>
+    <h1>保険の村</h1>
+    <p class="lede">村の人がみんなで少しずつお金を出し合います。保険料をいくらにすると、20年間、事故にあった人を助け続けられるでしょう。</p>
+  </div>
+
+  <details class="howto panel" open>
+    <summary>あそびかた</summary>
+    <ol>
+      <li>村の人数、事故の確率、保険料を決める（数字はすべて例です）。</li>
+      <li>「1年すすめる」か「20年まとめて」で、村の20年間を見る。</li>
+      <li>保険のお金が足りなくなったら、設定を変えてもう一度。</li>
+      <li>「100回ためす」で、同じ設定をくり返したときに何回足りなくなるかを調べる。</li>
+    </ol>
+  </details>
+
+  <div class="cols">
+    <div class="panel" style="display:grid;gap:12px">
+      <h2>村の設定</h2>
+      <div>
+        <label for="n">村の人数</label>
+        <div class="row" id="nRow">
+          <button class="ghost" data-n="10">10人</button>
+          <button class="ghost sel" data-n="100">100人</button>
+          <button class="ghost" data-n="1000">1000人</button>
+        </div>
+      </div>
+      <div>
+        <label for="p">1年で事故にあう確率：<b id="pv" class="num"></b></label>
+        <input type="range" id="p" min="1" max="10" step="1" value="2">
+      </div>
+      <div>
+        <label for="prem">1人が1年に払う保険料：<b id="premv" class="num"></b></label>
+        <input type="range" id="prem" min="1000" max="30000" step="500" value="5000">
+      </div>
+      <div class="foot">事故にあった人がもらえる保険金：50万円（例）／集めた保険料の1割は、保険の運営にかかるお金（例）</div>
+      <label class="row" style="color:var(--ink)"><input type="checkbox" id="mix"> リスクのちがう人がいる村にする（事故が多い人・少ない人が半分ずつ）</label>
+      <div id="mixBox" hidden>
+        <label for="premHi">事故が多い人の保険料：<b id="premHiv" class="num"></b></label>
+        <input type="range" id="premHi" min="1000" max="40000" step="500" value="5000">
+        <div class="foot">事故が多い人は確率が2倍、少ない人は半分（例）。最初はどちらも同じ保険料です。</div>
+      </div>
+      <div class="row">
+        <button id="step">1年すすめる</button>
+        <button id="all" class="ghost">20年まとめて</button>
+        <button id="reset" class="ghost">はじめから</button>
+      </div>
+    </div>
+
+    <div class="panel" style="display:grid;gap:10px">
+      <h2 id="yearT">0年目</h2>
+      <div class="msg" id="msg">設定を決めて、「1年すすめる」を押そう。</div>
+      <div class="stats">
+        <div class="stat coin"><div class="k">保険のお金（村の共同のさいふ）</div><div class="v" id="pool">0</div></div>
+        <div class="stat"><div class="k">事故にあった人（のべ）</div><div class="v" id="acc">0</div></div>
+        <div class="stat good"><div class="k">保険で助かった人</div><div class="v" id="saved">0</div></div>
+        <div class="stat bad"><div class="k">保険金を払えなかった人</div><div class="v" id="unpaid">0</div></div>
+      </div>
+      <div class="stat bad"><div class="k">もし保険がなく、同じ金額を自分で貯金していたら「貯金では足りなかった人」</div><div class="v" id="short">0</div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>保険のお金の動き</h2>
+    <canvas class="chart" id="chart" aria-label="保険のお金の推移のグラフ"></canvas>
+  </div>
+
+  <div class="panel" id="groupBox" hidden>
+    <h2>リスクごとのくらべ（20年間の合計）</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>グループ</th><th>払った保険料</th><th>もらった保険金</th><th>差（もらった − 払った）</th></tr></thead>
+      <tbody id="groupT"></tbody>
+    </table></div>
+  </div>
+
+  <div class="panel">
+    <h2>同じ設定で100回ためす</h2>
+    <p class="lede">運によって結果は変わります。100回くり返して、20年のうちに保険のお金が足りなくなった回数を数えます。</p>
+    <div class="row" style="margin-top:8px"><button id="trial" class="coin">100回ためす</button><span id="trialOut" class="num"></span></div>
+    <ul class="log" id="trialLog" style="margin-top:10px"></ul>
+  </div>
+
+  <div class="panel">
+    <h2>年ごとのきろく</h2>
+    <ul class="log" id="log"></ul>
+  </div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>保険料をいくらにしたら、20年間お金が足りた？ そのときの「保険料 × 人数」と「事故の数 × 50万円」をくらべると？</li>
+      <li>村の人数を10人・100人・1000人と変えて「100回ためす」をすると、何が変わった？ それはなぜ？</li>
+      <li>リスクのちがう人がいる村で、同じ保険料だと、得をしているのはどちら？ 事故の少ない人は、この保険に入り続けたいと思うかな？</li>
+      <li>貯金だけの村と、保険のある村。あなたはどちらに住みたい？ 理由は？</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜数字はすべて学習用の例です。実際の保険の金額や確率とは異なります。</p>
+</div>
+
+<script>
+const CLAIM = 500000, FEE = 0.1, YEARS = 20;
+let N = 100, S;
+const man = v => (Math.round(v / 1000) / 10).toLocaleString('ja-JP') + '万円';
+function people() {
+  const p = +$('#p').value / 100, mix = $('#mix').checked;
+  return Array.from({ length: N }, (_, i) => {
+    const hi = mix && i % 2 === 0;
+    return { p: mix ? (hi ? p * 2 : p / 2) : p, prem: mix && hi ? +$('#premHi').value : +$('#prem').value, hi, save: 0, paid: 0, got: 0 };
+  });
+}
+function fresh() { return { year: 0, pool: 0, acc: 0, saved: 0, unpaid: 0, short: 0, hist: [0], ppl: people() }; }
+function yearStep(s) {
+  s.year++;
+  let income = 0;
+  for (const q of s.ppl) { income += q.prem; q.paid += q.prem; q.save += q.prem; }
+  s.pool += income * (1 - FEE);
+  let acc = 0, saved = 0, unpaid = 0, short = 0;
+  for (const q of s.ppl) {
+    if (Math.random() < q.p) {
+      acc++;
+      if (q.save < CLAIM) short++;
+      q.save = Math.max(0, q.save - CLAIM);
+      if (s.pool >= CLAIM) { s.pool -= CLAIM; saved++; q.got += CLAIM; } else unpaid++;
+    }
+  }
+  s.acc += acc; s.saved += saved; s.unpaid += unpaid; s.short += short; s.hist.push(s.pool);
+  return { acc, saved, unpaid, income };
+}
+function render(last) {
+  $('#yearT').textContent = S.year + '年目';
+  $('#pool').textContent = man(S.pool);
+  $('#acc').textContent = S.acc + '人'; $('#saved').textContent = S.saved + '人';
+  $('#unpaid').textContent = S.unpaid + '人'; $('#short').textContent = S.short + '人';
+  const m = $('#msg');
+  if (S.unpaid > 0) { m.className = 'msg bad'; m.textContent = '保険のお金が足りず、保険金を払えなかった人がいます。'; }
+  else if (S.year >= YEARS) { m.className = 'msg good'; m.textContent = '20年間、事故にあった人全員に保険金を払えました。'; }
+  else { m.className = 'msg'; m.textContent = last ? `この年の事故：${last.acc}人` : '設定を決めて、「1年すすめる」を押そう。'; }
+  lineChart($('#chart'), [{ label: '保険のお金', color: tok('--accent'), data: S.hist }], { zero: true, ref: 0, fmt: v => man(v), xlab: i => i + '年' });
+  $('#step').disabled = $('#all').disabled = S.year >= YEARS;
+  if ($('#mix').checked && S.year) {
+    const g = f => S.ppl.filter(f).reduce((a, q) => ({ paid: a.paid + q.paid, got: a.got + q.got }), { paid: 0, got: 0 });
+    const rows = [['事故が多い人', g(q => q.hi)], ['事故が少ない人', g(q => !q.hi)]];
+    $('#groupT').replaceChildren(...rows.map(([k, v]) => el('tr', {}, el('td', {}, k), el('td', {}, man(v.paid)), el('td', {}, man(v.got)), el('td', {}, (v.got - v.paid >= 0 ? '+' : '') + man(v.got - v.paid)))));
+    $('#groupBox').hidden = false;
+  } else $('#groupBox').hidden = true;
+}
+function reset() { S = fresh(); $('#log').replaceChildren(); render(); }
+function one() {
+  if (S.year >= YEARS) return;
+  const r = yearStep(S);
+  addLog($('#log'), `${S.year}年目：保険料 ${man(r.income)} 集まる／事故 ${r.acc}人／助かった ${r.saved}人` + (r.unpaid ? `／払えなかった ${r.unpaid}人` : ''), r.unpaid ? 'bad' : '');
+  render(r);
+}
+$('#step').onclick = one;
+$('#all').onclick = () => { while (S.year < YEARS) one(); };
+$('#reset').onclick = reset;
+$('#trial').onclick = () => {
+  let broke = 0;
+  for (let t = 0; t < 100; t++) { const s = fresh(); for (let y = 0; y < YEARS; y++) yearStep(s); if (s.unpaid > 0) broke++; }
+  const txt = `${N}人・確率${$('#p').value}%・保険料${fmt(+$('#prem').value)}円 → 100回中 ${broke}回 足りなくなった`;
+  $('#trialOut').textContent = `100回中 ${broke}回`;
+  addLog($('#trialLog'), txt, broke ? 'bad' : 'good');
+};
+$$('#nRow button').forEach(b => b.onclick = () => { N = +b.dataset.n; $$('#nRow button').forEach(x => x.classList.toggle('sel', x === b)); reset(); });
+function labels() {
+  $('#pv').textContent = $('#p').value + '%';
+  $('#premv').textContent = fmt(+$('#prem').value) + '円';
+  $('#premHiv').textContent = fmt(+$('#premHi').value) + '円';
+  $('#mixBox').hidden = !$('#mix').checked;
+}
+['p', 'prem', 'premHi', 'mix'].forEach(id => $('#' + id).addEventListener('input', () => { labels(); reset(); }));
+window.addEventListener('resize', () => render());
+labels(); reset();
+</script>
+
+</body></html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>大航海と分散｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">初級・中級</span><span>お金の歴史／お金を育てる｜体験ゲーム</span></div>
+    <h1>大航海と分散</h1>
+    <p class="lede">あなたは100ギルダーを持つ商人。4隻の船（A〜D）に、どう分けて出資しますか？ 船の運命はサイコロで決まります。</p>
+  </div>
+
+  <details class="howto panel" open>
+    <summary>あそびかた</summary>
+    <ol>
+      <li>出資の分け方を選ぶ（1隻に集中／4隻に分散／自分で決める）。</li>
+      <li>「航海に出す」で1回ためす。サイコロ 1〜2：しずむ（0倍）、3〜5：成功（2倍）、6：大成功（3倍）。</li>
+      <li>「1000回ためす」で、同じ分け方をくり返したときの結果の散らばりを見る。</li>
+      <li>「10回つづけて航海」で、もどったお金を全部また出資し続けるとどうなるか見る。</li>
+    </ol>
+  </details>
+
+  <div class="cols">
+    <div class="panel" style="display:grid;gap:10px">
+      <h2>出資の分け方</h2>
+      <div class="row" id="preset">
+        <button class="ghost sel" data-p="c">1隻に集中</button>
+        <button class="ghost" data-p="d">4隻に分散</button>
+        <button class="ghost" data-p="f">自分で決める</button>
+      </div>
+      <div id="ships" style="display:grid;gap:6px"></div>
+      <div class="foot">出資しなかった分は、手元に残ります。</div>
+      <div class="row"><button id="sail">航海に出す</button><button id="many" class="coin">1000回ためす</button><button id="chain" class="ghost">10回つづけて航海</button></div>
+    </div>
+    <div class="panel" style="display:grid;gap:10px">
+      <h2>結果</h2>
+      <div class="msg" id="msg">分け方を決めて「航海に出す」を押そう。</div>
+      <div class="stats" id="dice"></div>
+      <div class="stats">
+        <div class="stat coin"><div class="k">もどってきたお金</div><div class="v" id="ret">―</div></div>
+        <div class="stat"><div class="k">航海の回数</div><div class="v" id="cnt">0</div></div>
+      </div>
+      <ul class="log" id="log"></ul>
+    </div>
+  </div>
+
+  <div class="panel" id="histBox" hidden>
+    <h2 id="histT">1000回ためした結果</h2>
+    <canvas class="chart" id="hist" aria-label="結果の散らばりのグラフ"></canvas>
+    <div class="stats" style="margin-top:8px">
+      <div class="stat"><div class="k">平均</div><div class="v" id="avg"></div></div>
+      <div class="stat bad"><div class="k">100より減った回数</div><div class="v" id="loss"></div></div>
+      <div class="stat"><div class="k">いちばん少ない</div><div class="v" id="min"></div></div>
+      <div class="stat good"><div class="k">いちばん多い</div><div class="v" id="max"></div></div>
+    </div>
+  </div>
+
+  <div class="panel" id="chainBox" hidden>
+    <h2>10回つづけて航海（もどったお金を全部また出資）</h2>
+    <canvas class="chart" id="chainC" aria-label="10回の航海のグラフ"></canvas>
+  </div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>1回だけなら、集中と分散のどちらがよかった？ 1000回ためすと、何がわかった？</li>
+      <li>集中も分散も、平均はあまり変わらない。では、何がちがった？</li>
+      <li>10回つづけて全部を出資し続けると、集中はどうなりやすかった？</li>
+      <li>分散のよくないところはある？ あなたなら、どう分ける？</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜サイコロの確率は学習用に決めた例です。</p>
+</div>
+
+<script>
+const NAMES = ['A', 'B', 'C', 'D'];
+let alloc = [100, 0, 0, 0], count = 0;
+const mult = d => d <= 2 ? 0 : d <= 5 ? 2 : 3;
+function drawShips() {
+  const free = $('#preset .sel').dataset.p === 'f';
+  $('#ships').replaceChildren(...NAMES.map((n, i) => el('div', { class: 'row' },
+    el('span', { style: 'width:4.5em' }, `船${n}`),
+    free ? el('input', { type: 'range', min: 0, max: 100, step: 5, value: alloc[i], id: 's' + i, style: 'flex:1', oninput: e => setShip(i, +e.target.value) }) : el('span', { style: 'flex:1' }),
+    el('b', { class: 'num', style: 'width:6em;text-align:right' }, alloc[i] + 'ギルダー'))));
+  const sum = alloc.reduce((a, b) => a + b, 0);
+  $('#ships').append(el('div', { class: 'foot' }, `出資の合計 ${sum}／手元に残す ${100 - sum}`));
+}
+function setShip(i, v) {
+  const others = alloc.reduce((a, b, j) => a + (j === i ? 0 : b), 0);
+  alloc[i] = Math.min(v, 100 - others); drawShips();
+}
+function voyage() {
+  const ds = alloc.map(() => dice());
+  const back = alloc.reduce((a, x, i) => a + x * mult(ds[i]), 0) + (100 - alloc.reduce((a, b) => a + b, 0));
+  return { ds, back };
+}
+$('#sail').onclick = () => {
+  const { ds, back } = voyage(); count++;
+  $('#dice').replaceChildren(...NAMES.map((n, i) => el('div', { class: 'stat ' + (alloc[i] ? (mult(ds[i]) ? 'good' : 'bad') : '') },
+    el('div', { class: 'k' }, `船${n}（${alloc[i]}）`), el('div', { class: 'v' }, alloc[i] ? `サイコロ${ds[i]} → ${['しずんだ', '', '成功', '大成功'][mult(ds[i])]}` : '出資なし'))));
+  $('#dice').querySelectorAll('.v').forEach(v => v.style.fontSize = '15px');
+  $('#ret').textContent = back + 'ギルダー'; $('#cnt').textContent = count + '回';
+  $('#msg').textContent = back > 100 ? `100ギルダーが ${back}ギルダーになった！` : back < 100 ? `100ギルダーが ${back}ギルダーにへってしまった…` : '100ギルダーのまま。';
+  $('#msg').className = 'msg ' + (back > 100 ? 'good' : back < 100 ? 'bad' : '');
+  addLog($('#log'), `${count}回目：[${alloc.join('・')}] → ${back}`, back > 100 ? 'good' : back < 100 ? 'bad' : '');
+};
+$('#many').onclick = () => {
+  const res = Array.from({ length: 1000 }, () => voyage().back);
+  const edges = [0, 50, 100, 150, 200, 250, 301];
+  const labels = ['0〜49', '50〜99', '100〜149', '150〜199', '200〜249', '250〜300'];
+  const bins = labels.map((l, k) => ({ label: l, count: res.filter(v => v >= edges[k] && v < edges[k + 1]).length, color: k < 2 ? tok('--bad') : tok('--accent') }));
+  $('#histBox').hidden = false; $('#histT').textContent = `1000回ためした結果（分け方 ${alloc.join('・')}）`;
+  barChart($('#hist'), bins);
+  $('#avg').textContent = (res.reduce((a, b) => a + b, 0) / 1000).toFixed(1);
+  $('#loss').textContent = res.filter(v => v < 100).length + '回';
+  $('#min').textContent = Math.min(...res); $('#max').textContent = Math.max(...res);
+};
+$('#chain').onclick = () => {
+  const run = a => { let m = 100; const path = [100]; for (let t = 0; t < 10; t++) { const inv = a.map(x => x / 100 * m), keep = m - inv.reduce((p, q) => p + q, 0); m = keep + inv.reduce((p, x) => p + x * mult(dice()), 0); path.push(Math.round(m)); } return path; };
+  const cur = run(alloc), con = run([100, 0, 0, 0]), div = run([25, 25, 25, 25]);
+  $('#chainBox').hidden = false;
+  lineChart($('#chainC'), [{ label: 'いまの分け方', color: tok('--coin'), data: cur }, { label: '集中', color: tok('--bad'), data: con }, { label: '分散', color: tok('--accent'), data: div }], { zero: true, xlab: i => i + '回' });
+};
+$$('#preset button').forEach(b => b.onclick = () => {
+  $$('#preset button').forEach(x => x.classList.toggle('sel', x === b));
+  alloc = b.dataset.p === 'c' ? [100, 0, 0, 0] : b.dataset.p === 'd' ? [25, 25, 25, 25] : [...alloc];
+  drawShips();
+});
+drawShips();
+</script>
+
+</body></html>

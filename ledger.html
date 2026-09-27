@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>みんなの台帳｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">上級</span><span>暗号資産とデジタルマネーの未来｜体験ゲーム</span></div>
+    <h1>みんなの台帳</h1>
+    <p class="lede">5人（A〜E）が、同じ取引の記録（台帳）を1冊ずつ持っています。だれかがこっそり書きかえたら、見つけられるでしょうか。</p>
+  </div>
+
+  <details class="howto panel" open>
+    <summary>あそびかた</summary>
+    <ol>
+      <li>「取引をふやす」で、5冊すべてに同じ記録を書き足す。</li>
+      <li>台帳と行を選んで「こっそり書きかえる」。先生にやってもらってもOK。</li>
+      <li>「照らし合わせる」で、多数決により正しい記録を決める。</li>
+      <li>「つなぎ番号」をオンにすると、前の行の内容から計算した番号が各行につきます。書きかえると、どうなる？</li>
+    </ol>
+  </details>
+
+  <div class="panel" style="display:grid;gap:10px">
+    <div class="row">
+      <button id="add">取引をふやす</button>
+      <label for="who">台帳</label><select id="who"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option><option value="4">E</option></select>
+      <label for="line">行</label><select id="line"></select>
+      <button id="tamper" class="warn">こっそり書きかえる</button>
+      <button id="check" class="coin">照らし合わせる</button>
+      <button id="reset" class="ghost">はじめから</button>
+    </div>
+    <label class="row" style="color:var(--ink)"><input type="checkbox" id="chain"> つなぎ番号を表示する</label>
+    <div class="msg" id="msg">台帳を見てみよう。</div>
+  </div>
+
+  <div class="panel tbl-wrap">
+    <table>
+      <thead id="th"></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>1冊だけ書きかえたとき、どうやって見つけられた？</li>
+      <li>5冊のうち3冊を同じように書きかえると、何が起きた？ それを防ぐには、どうすればよさそう？</li>
+      <li>つなぎ番号があると、書きかえはどう見える？ 前の行を書きかえると、後ろの行はどうなった？</li>
+      <li>みんなで記録を持ち合うやり方が向いている場面、向いていない場面は？</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜本物のブロックチェーンの考え方を、とても単純にした学習用のゲームです。</p>
+</div>
+
+<script>
+const NAMES = ['たろう', 'はなこ', 'けん', 'ゆい', 'そら'], BOOKS = ['A', 'B', 'C', 'D', 'E'];
+let TX, books, flagged = null;
+function randTx() { const a = Math.floor(Math.random() * 5); let b = Math.floor(Math.random() * 4); if (b >= a) b++; return { from: NAMES[a], to: NAMES[b], amt: 10 * (1 + Math.floor(Math.random() * 10)) }; }
+function reset() { TX = [randTx(), randTx(), randTx()]; books = BOOKS.map(() => TX.map(t => ({ ...t }))); flagged = null; render('台帳を見てみよう。'); }
+const txt = t => `${t.from} → ${t.to} ${t.amt}円`;
+function code(rows, i) { let h = 7; for (let k = 0; k <= i; k++) for (const ch of txt(rows[k])) h = (h * 31 + ch.charCodeAt(0)) % 9973; return String(h).padStart(4, '0'); }
+function render(t, cls = '') {
+  const chain = $('#chain').checked;
+  $('#th').replaceChildren(el('tr', {}, el('th', {}, '行'), ...BOOKS.map(b => el('th', {}, '台帳' + b))));
+  $('#tb').replaceChildren(...TX.map((_, i) => el('tr', {}, el('td', {}, (i + 1) + '行目'),
+    ...books.map((bk, j) => {
+      const bad = flagged && flagged[i] && flagged[i].includes(j);
+      return el('td', { style: 'text-align:left;' + (bad ? `background:var(--bad-soft);color:var(--bad);font-weight:700` : '') },
+        txt(bk[i]), chain ? el('span', { class: 'foot' }, ` #${code(bk, i)}`) : '');
+    }))));
+  $('#line').replaceChildren(...TX.map((_, i) => el('option', { value: i }, (i + 1) + '行目')));
+  $('#msg').textContent = t; $('#msg').className = 'msg ' + cls;
+}
+$('#add').onclick = () => { const t = randTx(); TX.push(t); books.forEach(b => b.push({ ...t })); flagged = null; render(`新しい取引「${txt(t)}」を5冊すべてに書き足した。`); };
+$('#tamper').onclick = () => {
+  const w = +$('#who').value, i = +$('#line').value;
+  books[w][i] = { ...books[w][i], amt: books[w][i].amt * 10 };
+  flagged = null; render(`台帳${BOOKS[w]}の${i + 1}行目を、こっそり書きかえた…（金額を10倍に）`, 'bad');
+};
+$('#check').onclick = () => {
+  flagged = {}; let found = 0, wrongMajority = 0;
+  TX.forEach((_, i) => {
+    const cnt = {}; books.forEach(b => { const k = txt(b[i]); cnt[k] = (cnt[k] || 0) + 1; });
+    const major = Object.entries(cnt).sort((x, y) => y[1] - x[1])[0][0];
+    flagged[i] = books.map((b, j) => txt(b[i]) !== major ? j : -1).filter(j => j >= 0);
+    found += flagged[i].length;
+    if (major !== txt(TX[i])) wrongMajority++;
+  });
+  if (wrongMajority) render(`多数決で決めたら、書きかえられた記録のほうが「正しい」ことになってしまった行があります（${wrongMajority}行）。`, 'bad');
+  else if (found) render(`多数決で照らし合わせたら、ほかとちがう記録が ${found}か所 見つかった（赤い所）。`, 'good');
+  else render('5冊とも同じ。書きかえは見つからなかった。', 'good');
+};
+$('#chain').onchange = () => render($('#msg').textContent);
+$('#reset').onclick = reset;
+reset();
+</script>
+
+</body></html>

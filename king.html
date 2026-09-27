@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>王様のお金｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">初級</span><span>お金の歴史｜体験ゲーム</span></div>
+    <h1>王様のお金</h1>
+    <p class="lede">あなたは、ある国の王様。毎年、戦争のためにお金が150たりません。5年間、どうやってお金を用意しますか？</p>
+  </div>
+
+  <details class="howto panel" open>
+    <summary>あそびかた</summary>
+    <ol>
+      <li>毎年、A・B・Cの作戦から1つ選ぶ。</li>
+      <li>国の「信用」「国民の気持ち」「物の値段」「借金」がどう変わるか見る。</li>
+      <li>作戦の結果は、すぐに出るものと、あとから出るものがある。</li>
+      <li>5年たったら、グラフを見てふりかえる。ちがう作戦でもう一度やってみよう。</li>
+    </ol>
+  </details>
+
+  <div class="cols">
+    <div class="panel" style="display:grid;gap:10px">
+      <h2 id="yearT">1年目</h2>
+      <button id="a" class="ghost" style="text-align:left">A　税金を上げる<br><span class="foot">国民から多く集める</span></button>
+      <button id="b" class="ghost" style="text-align:left">B　金貨の金をへらして、金貨の数をふやす<br><span class="foot">同じ金で、たくさんの金貨をつくる</span></button>
+      <button id="c" class="ghost" style="text-align:left">C　外国から借りる<br><span class="foot">あとで利子をつけて返す</span></button>
+      <button id="reset" class="ghost">はじめから</button>
+    </div>
+    <div class="panel" style="display:grid;gap:10px">
+      <div class="msg" id="msg">作戦を選ぼう。</div>
+      <div class="stats">
+        <div class="stat" id="trS"><div class="k">国の信用</div><div class="v" id="trust"></div></div>
+        <div class="stat" id="moS"><div class="k">国民の気持ち</div><div class="v" id="mood"></div></div>
+        <div class="stat" id="prS"><div class="k">物の値段（はじめ＝100）</div><div class="v" id="price"></div></div>
+        <div class="stat" id="deS"><div class="k">外国への借金</div><div class="v" id="debt"></div></div>
+        <div class="stat coin"><div class="k">金貨にふくまれる金</div><div class="v" id="gold"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>5年間の動き</h2>
+    <canvas class="chart" id="chart" aria-label="信用と物の値段のグラフ"></canvas>
+  </div>
+
+  <div class="panel"><h2>できごと</h2><ul class="log" id="log"></ul></div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>いちばん信用が残った作戦は？ それはなぜ？</li>
+      <li>Bの作戦は、1年目と5年目で結果がどう変わった？</li>
+      <li>物の値段が上がると、国民のくらしはどうなる？</li>
+      <li>「信用」は、一度へるとすぐにもどった？</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜歴史をもとに、しくみを単純にした学習用のゲームです。</p>
+</div>
+
+<script>
+let S;
+function reset() {
+  S = { y: 0, trust: 10, mood: 10, price: 100, debt: 0, gold: 100, bCount: 0, H: { trust: [10], price: [100] } };
+  $('#log').replaceChildren(); render('作戦を選ぼう。');
+}
+function render(t, cls = '') {
+  const done = S.y >= 5;
+  $('#yearT').textContent = done ? '5年間おわり' : (S.y + 1) + '年目';
+  $('#trust').textContent = S.trust; $('#mood').textContent = S.mood;
+  $('#price').textContent = Math.round(S.price); $('#debt').textContent = Math.round(S.debt); $('#gold').textContent = Math.round(S.gold) + '％';
+  $('#trS').className = 'stat ' + (S.trust <= 4 ? 'bad' : S.trust >= 8 ? 'good' : '');
+  $('#moS').className = 'stat ' + (S.mood <= 4 ? 'bad' : S.mood >= 8 ? 'good' : '');
+  $('#prS').className = 'stat ' + (S.price >= 150 ? 'bad' : '');
+  $('#deS').className = 'stat ' + (S.debt >= 400 ? 'bad' : '');
+  ['a', 'b', 'c'].forEach(id => $('#' + id).disabled = done);
+  $('#msg').textContent = t; $('#msg').className = 'msg ' + cls;
+  lineChart($('#chart'), [{ label: '国の信用（×10）', color: tok('--accent'), data: S.H.trust.map(v => v * 10) }, { label: '物の値段', color: tok('--bad'), data: S.H.price }], { zero: true, xlab: i => i ? i + '年' : '始' });
+}
+function turn(choice) {
+  const ev = [];
+  // あとから出る結果：前の年までに金貨の金をへらした分だけ、物の値段が上がる
+  if (S.gold < 100) { const up = (100 - S.gold) * 0.35; S.price *= 1 + up / 100 * 1.6; ev.push(`金貨がふえた分、物の値段が上がった（${Math.round(S.price)}）`); }
+  if (S.debt > 0) { const it = Math.round(S.debt * 0.1); S.debt += it; ev.push(`借金に利子がついた（+${it}）`); }
+  if (choice === 'a') { S.mood -= S.mood <= 5 ? 3 : 2; ev.push('税金を上げた。国民は不満そう'); }
+  if (choice === 'b') { S.bCount++; S.gold *= 0.75; if (S.bCount === 1) ev.push('金貨がふえて、今年は楽になった！'); else { S.trust -= 1; ev.push('「最近の金貨は軽いぞ」とうわさが出た'); } }
+  if (choice === 'c') { S.debt += 150; ev.push('外国からお金を借りた'); }
+  if (S.gold < 60) { S.trust -= 3; ev.push('外国の商人が「この国の金貨は受け取れない」と言い出した'); }
+  if (S.debt >= 400) { S.trust -= 2; ev.push('「この国は借金を返せるのか？」と外国が心配している'); }
+  if (S.mood <= 3) { S.trust -= 2; ev.push('国民の不満が大きくなり、あちこちで反対の声が上がった'); }
+  if (S.price >= 150) { S.mood -= 1; ev.push('物の値段が高くなり、国民のくらしが苦しくなった'); }
+  if (Math.random() < 0.25) { if (Math.random() < 0.5) { S.mood += 1; ev.push('今年は豊作！ 国民の気持ちが少し明るくなった'); } else { S.price *= 1.08; ev.push('今年は不作。食べ物の値段が上がった'); } }
+  S.trust = clamp(S.trust, 0, 10); S.mood = clamp(S.mood, 0, 10);
+  S.y++; S.H.trust.push(S.trust); S.H.price.push(Math.round(S.price));
+  addLog($('#log'), `${S.y}年目【${{ a: 'A 税金', b: 'B 金をへらす', c: 'C 借りる' }[choice]}】` + ev.join('／'), S.trust <= 4 ? 'bad' : '');
+  if (S.y >= 5) render(`5年間おわり。信用は ${S.trust}、物の値段は ${Math.round(S.price)} になりました。ほかの作戦でもためしてみよう。`, S.trust >= 7 ? 'good' : 'bad');
+  else render(ev[ev.length - 1] || '次の作戦を選ぼう。');
+}
+$('#a').onclick = () => turn('a'); $('#b').onclick = () => turn('b'); $('#c').onclick = () => turn('c');
+$('#reset').onclick = reset;
+window.addEventListener('resize', () => render($('#msg').textContent));
+reset();
+</script>
+
+</body></html>

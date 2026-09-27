@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>支え手シミュレーター｜MIRADAS 体験ゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+:root {
+  --paper: #F3F4EE; --card: #FFFFFF; --ink: #1F2B33; --muted: #5C686E; --line: #D6DBD1;
+  --accent: #27715F; --accent-ink: #FFFFFF; --accent-soft: #E3EEE8;
+  --coin: #D9962E; --coin-soft: #FBF1DF; --good: #3A8753; --good-soft: #E4F1E7;
+  --bad: #C0503A; --bad-soft: #F8E6E1; --chip: #ECEFE7; --grid: #E4E7DF;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+    --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+    --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+    --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C1F; --card: #1F272B; --ink: #E7ECE9; --muted: #A2ADB0; --line: #34403F;
+  --accent: #5DB8A0; --accent-ink: #0F1A17; --accent-soft: #223A33;
+  --coin: #F0B85A; --coin-soft: #3A3122; --good: #78C28E; --good-soft: #1F3527;
+  --bad: #EE8C74; --bad-soft: #3D2620; --chip: #283234; --grid: #2C3638;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { background: var(--paper); color: var(--ink); margin: 0;
+  font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.7; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 18px 56px;
+  display: grid; gap: 16px; }
+.top { display: grid; gap: 6px; }
+.top .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { display: inline-block; padding: 1px 10px; border-radius: 999px; background: var(--chip);
+  color: var(--ink); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+.chip.lv { background: var(--accent); color: var(--accent-ink); }
+h1 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: clamp(24px, 5vw, 32px); line-height: 1.3; margin: 0; text-wrap: balance; }
+h2 { font-family: "Zen Maru Gothic", "BIZ UDPGothic", sans-serif; font-weight: 700;
+  font-size: 18px; margin: 0 0 8px; }
+.lede { margin: 0; color: var(--muted); max-width: 62ch; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+details.howto summary { cursor: pointer; font-weight: 700; }
+details.howto ol { margin: 8px 0 0; padding-left: 22px; }
+.cols { display: grid; gap: 16px; }
+@media (min-width: 760px) { .cols { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn { font: inherit; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); padding: 8px 14px; cursor: pointer; min-height: 42px; }
+button.ghost { background: transparent; color: var(--accent); }
+button.coin { background: var(--coin); border-color: var(--coin); color: #2A1E08; }
+button.warn { background: transparent; border-color: var(--bad); color: var(--bad); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--coin); outline-offset: 2px; }
+button.sel { box-shadow: inset 0 0 0 3px var(--coin); }
+label { font-size: 14px; color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+input[type=number], select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); max-width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--chip); border-radius: 10px; padding: 8px 10px; }
+.stat .k { font-size: 12.5px; color: var(--muted); }
+.stat .v { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat.good { background: var(--good-soft); } .stat.bad { background: var(--bad-soft); } .stat.coin { background: var(--coin-soft); }
+.num { font-variant-numeric: tabular-nums; }
+.log { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; max-height: 260px; overflow-y: auto; font-size: 14px; }
+.log li { padding: 5px 8px; border-radius: 8px; background: var(--chip); }
+.log li.good { background: var(--good-soft); } .log li.bad { background: var(--bad-soft); } .log li.coin { background: var(--coin-soft); }
+.msg { padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-weight: 700; min-height: 1.7em; }
+.msg.bad { background: var(--bad-soft); } .msg.good { background: var(--good-soft); }
+.think { border-left: 5px solid var(--coin); }
+.think ol { margin: 0; padding-left: 22px; }
+canvas.chart { width: 100%; height: 220px; display: block; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { padding: 5px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 700; }
+.foot { color: var(--muted); font-size: 12.5px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tok = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = n => Math.round(n).toLocaleString('ja-JP');
+const dice = () => 1 + Math.floor(Math.random() * 6);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+function addLog(ul, text, cls = '') { ul.prepend(el('li', { class: cls }, text)); }
+// 折れ線グラフ。series = [{label, color, data:[...]}]
+function lineChart(cv, series, opt = {}) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 46, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+  const all = series.flatMap(s => s.data).filter(v => v != null);
+  if (!all.length) return;
+  let lo = opt.min ?? Math.min(...all), hi = opt.max ?? Math.max(...all);
+  if (opt.zero) lo = Math.min(0, lo);
+  if (hi === lo) { hi += 1; lo -= 1; }
+  const pad = (hi - lo) * 0.08; if (opt.min == null) lo -= pad; if (opt.max == null) hi += pad;
+  const n = Math.max(...series.map(s => s.data.length));
+  const x = i => L + (n <= 1 ? pw / 2 : pw * i / (n - 1)), y = v => T + ph * (1 - (v - lo) / (hi - lo));
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.fillStyle = tok('--muted'); g.strokeStyle = tok('--grid'); g.lineWidth = 1;
+  for (let k = 0; k <= 4; k++) {
+    const v = lo + (hi - lo) * k / 4, yy = y(v);
+    g.beginPath(); g.moveTo(L, yy); g.lineTo(W - R, yy); g.stroke();
+    g.textAlign = 'right'; g.textBaseline = 'middle'; g.fillText((opt.fmt || fmt)(v), L - 6, yy);
+  }
+  if (opt.ref != null) { g.strokeStyle = tok('--coin'); g.setLineDash([5, 4]); g.beginPath(); g.moveTo(L, y(opt.ref)); g.lineTo(W - R, y(opt.ref)); g.stroke(); g.setLineDash([]); }
+  g.textAlign = 'center'; g.textBaseline = 'top'; g.fillStyle = tok('--muted');
+  const step = Math.max(1, Math.ceil(n / 8));
+  for (let i = 0; i < n; i += step) g.fillText((opt.xlab || (i => i))(i), x(i), H - B + 6);
+  series.forEach((s, si) => {
+    g.strokeStyle = s.color; g.lineWidth = 2.5; g.beginPath();
+    s.data.forEach((v, i) => { if (v == null) return; i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)); }); g.stroke();
+    const li = s.data.length - 1; if (li >= 0 && s.data[li] != null) { g.fillStyle = s.color; g.beginPath(); g.arc(x(li), y(s.data[li]), 4, 0, 7); g.fill(); }
+    g.fillStyle = s.color; g.textAlign = 'left'; g.textBaseline = 'top'; g.font = 'bold 12px "BIZ UDPGothic", sans-serif';
+    g.fillText('― ' + s.label, L + 4 + si * 130, 2); g.font = '11px "BIZ UDPGothic", sans-serif';
+  });
+}
+// ヒストグラム。bins = [{label, count}]
+function barChart(cv, bins, color) {
+  const dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const L = 10, R = 10, T = 18, B = 34, pw = W - L - R, ph = H - T - B, mx = Math.max(1, ...bins.map(b => b.count));
+  const bw = pw / bins.length;
+  g.font = '11px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center';
+  bins.forEach((b, i) => {
+    const hh = ph * b.count / mx, xx = L + i * bw;
+    g.fillStyle = b.color || color; g.fillRect(xx + 2, T + ph - hh, bw - 4, hh);
+    g.fillStyle = tok('--ink'); g.textBaseline = 'bottom'; if (b.count) g.fillText(b.count, xx + bw / 2, T + ph - hh - 1);
+    g.fillStyle = tok('--muted'); g.textBaseline = 'top'; g.fillText(b.label, xx + bw / 2, T + ph + 6);
+  });
+}
+</script>
+
+</head><body>
+<div class="wrap">
+  <div class="top">
+    <div class="meta"><span class="chip lv">上級</span><span>人口減少と日本の経済｜体験ゲーム</span></div>
+    <h1>支え手シミュレーター</h1>
+    <p class="lede">高齢者1人の生活や医療を、働く世代の何人で支えているか。年代と、支え方のルールを変えて、1人あたりの負担を見てみよう。</p>
+  </div>
+
+  <div class="cols">
+    <div class="panel" style="display:grid;gap:12px">
+      <h2>設定</h2>
+      <div><label for="yr">年：<b id="yrv" class="num"></b></label><input type="range" id="yr" min="0" max="4" step="1" value="3"></div>
+      <div>
+        <label>「支える側」として働く年れいの上限</label>
+        <div class="row" id="age"><button class="ghost sel" data-v="1">64才まで</button><button class="ghost" data-v="1.35">69才まで</button><button class="ghost" data-v="1.9">74才まで</button></div>
+        <div class="foot">その年れいの人が全員「支える側」になったと考えた、おおよその目安です。</div>
+      </div>
+      <div>
+        <label>高齢者1人にかかるお金（1年・例）の水準</label>
+        <div class="row" id="lvl"><button class="ghost sel" data-v="1">いまと同じ（200万円）</button><button class="ghost" data-v="0.9">1割へらす</button><button class="ghost" data-v="0.8">2割へらす</button></div>
+      </div>
+      <div><label for="tech">ロボットやAIで、介護や医療のお金をへらす：<b id="techv" class="num"></b></label><input type="range" id="tech" min="0" max="20" step="5" value="0"></div>
+    </div>
+    <div class="panel" style="display:grid;gap:10px">
+      <h2 id="head"></h2>
+      <canvas id="people" style="width:100%;height:120px;display:block" aria-label="支える人と支えられる人の図"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">高齢者1人を支える、働く世代の人数</div><div class="v" id="ratio"></div></div>
+        <div class="stat coin"><div class="k">働く世代1人あたりの負担（1年）</div><div class="v" id="burden"></div></div>
+      </div>
+      <div class="msg" id="msg"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>年代ごとの負担（いまの設定）</h2>
+    <canvas class="chart" id="chart" aria-label="年代ごとの負担のグラフ"></canvas>
+  </div>
+
+  <div class="panel think">
+    <h2>考えてみよう</h2>
+    <ol>
+      <li>1965年ごろと2050年ごろで、1人あたりの負担は何倍になる？</li>
+      <li>「働く年れいの上限」と「かかるお金の水準」、それぞれ変えると負担はどう変わった？ それで困る人はだれ？</li>
+      <li>ロボットやAIだけで、負担を1965年ごろと同じにできる？</li>
+      <li>あなたなら、どの組み合わせを選ぶ？ その理由と、困る人への説明も考えよう。</li>
+    </ol>
+  </div>
+  <p class="foot">MIRADAS 体験ゲーム｜「支える人数」は財務省などの資料で使われるおおよその目安（2050年は推計）。働く年れいを上げたときの人数の増え方や、200万円という金額は学習用の例です。</p>
+</div>
+
+<script>
+const YEARS = [{ y: '1965年ごろ', r: 9.1 }, { y: '1990年ごろ', r: 5.1 }, { y: '2012年ごろ', r: 2.4 }, { y: '2025年ごろ', r: 1.9 }, { y: '2050年ごろ（推計）', r: 1.2 }];
+const COST = 2000000;
+const sel = id => +$(`#${id} .sel`).dataset.v;
+function calc(i) { const ratio = YEARS[i].r * sel('age'); return { ratio, burden: COST * sel('lvl') * (1 - +$('#tech').value / 100) / ratio }; }
+function drawPeople(ratio) {
+  const cv = $('#people'), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr; const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0, 0, W, H);
+  const fig = (x, y, s, c) => { g.fillStyle = c; g.beginPath(); g.arc(x, y - s * 1.1, s * 0.45, 0, 7); g.fill(); g.fillRect(x - s * 0.45, y - s * 0.6, s * 0.9, s * 1.1); };
+  fig(40, 80, 34, tok('--coin'));
+  g.fillStyle = tok('--muted'); g.font = '12px "BIZ UDPGothic", sans-serif'; g.textAlign = 'center'; g.fillText('高齢者1人', 40, 112);
+  const whole = Math.floor(ratio), part = ratio - whole, s = 26;
+  for (let k = 0; k < Math.ceil(ratio); k++) {
+    const x = 110 + k * 36; if (x > W - 20) break;
+    g.globalAlpha = k < whole ? 1 : Math.max(0.25, part); fig(x, 86, s, tok('--accent')); g.globalAlpha = 1;
+  }
+  g.fillStyle = tok('--muted'); g.textAlign = 'left'; g.fillText('働く世代', 96, 112);
+}
+function render() {
+  const i = +$('#yr').value, c = calc(i);
+  $('#yrv').textContent = YEARS[i].y; $('#head').textContent = YEARS[i].y + 'のようす';
+  $('#techv').textContent = $('#tech').value + '％';
+  $('#ratio').textContent = c.ratio.toFixed(1) + '人'; $('#burden').textContent = fmt(c.burden / 10000) + '万円';
+  const base = COST / YEARS[0].r;
+  $('#msg').textContent = `1965年ごろ（何もしない場合）の約 ${(c.burden / base).toFixed(1)} 倍の負担です。`;
+  drawPeople(c.ratio);
+  lineChart($('#chart'), [{ label: '1人あたりの負担（万円）', color: tok('--coin'), data: YEARS.map((_, k) => Math.round(calc(k).burden / 10000)) }], { zero: true, fmt: v => Math.round(v) + '万', xlab: k => YEARS[k].y.replace('（推計）', '').replace('ごろ', '') });
+}
+['age', 'lvl'].forEach(id => $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle('sel', x === b)); render(); }));
+['yr', 'tech'].forEach(id => $('#' + id).addEventListener('input', render));
+window.addEventListener('resize', render);
+render();
+</script>
+
+</body></html>
