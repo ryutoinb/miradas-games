@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>お金持ちになるには？｜MIRADAS オンデマンド授業</title>
+<style>
+:root {
+  --ink: #1F3D35; --muted: #62837A; --paper: #F3F8F5; --card: #FFFFFF; --line: #D5E3DC;
+  --main: #2DB382; --dark: #1E8060; --pale: #E2F7EE; --gold: #F28C28; --gold-pale: #FFEFDA; --red: #E5604A;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--paper); color: var(--ink); font-family: "BIZ UDPGothic", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px; line-height: 1.65; -webkit-text-size-adjust: 100%; }
+button { font: inherit; cursor: pointer; }
+.app { max-width: 1040px; margin: 0 auto; padding: 10px 12px 28px; display: grid; gap: 10px; }
+.top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.brand { font-weight: 700; color: var(--dark); letter-spacing: .04em; }
+.sec { background: var(--main); color: #fff; font-weight: 700; font-size: 13px; padding: 2px 12px; border-radius: 999px; }
+.count { margin-left: auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.bar { display: flex; gap: 3px; }
+.bar button { flex: 1; height: 9px; border: 0; border-radius: 5px; background: var(--line); padding: 0; min-width: 4px; }
+.bar button.done { background: #9ADBC0; } .bar button.now { background: var(--gold); } .bar button.teacher { outline: 2px solid var(--gold); outline-offset: 1px; }
+.stage { position: relative; aspect-ratio: 16 / 9; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  width: min(100%, calc(58vh * 16 / 9)); margin-inline: auto; }   /* スライドと吹き出しが、1画面におさまるように */
+.stage img { width: 100%; height: 100%; display: block; transition: filter .35s; }
+.stage img.blur { filter: blur(16px) saturate(.6); }
+.hl { position: absolute; border: 4px solid var(--gold); border-radius: 12px; box-shadow: 0 0 0 200vmax rgba(15, 40, 32, .38);
+  transition: all .45s ease; pointer-events: none; }
+.hide-badge { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.hide-badge span { background: var(--dark); color: #fff; font-weight: 700; font-size: clamp(16px, 3.2vw, 26px); padding: 10px 26px; border-radius: 999px; }
+.talk { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+.avatar { width: clamp(76px, 15vw, 124px); }
+.avatar svg { width: 100%; height: auto; display: block; }
+.avatar .name { text-align: center; font-weight: 700; color: var(--dark); font-size: 13px; }
+.bubble { position: relative; background: var(--card); border: 2px solid var(--main); border-radius: 18px; padding: 14px 18px; min-height: 86px;
+  font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; line-height: 1.6; }
+.bubble::before { content: ""; position: absolute; left: -12px; top: 30px; width: 20px; height: 20px; background: var(--card);
+  border-left: 2px solid var(--main); border-bottom: 2px solid var(--main); transform: rotate(45deg); }
+.bubble .q { color: var(--dark); }
+.act { display: grid; gap: 8px; margin-top: 12px; font-size: 16px; font-weight: 400; }
+.opts { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.opts button, .btn { border: 2px solid var(--main); background: #fff; color: var(--ink); border-radius: 12px; padding: 10px 14px; font-weight: 700; min-height: 46px; text-align: left; }
+.opts button:hover, .btn:hover { background: var(--pale); }
+.btn.go { background: var(--gold); border-color: var(--gold); color: #fff; text-align: center; }
+.btn.main { background: var(--main); color: #fff; text-align: center; }
+a.btn { text-decoration: none; display: inline-block; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+input[type=text], input[type=number], select { font: inherit; padding: 10px 12px; border-radius: 12px; border: 2px solid var(--line); min-width: 0; flex: 1; background: #fff; color: var(--ink); }
+input:focus-visible, button:focus-visible, select:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.unit { font-weight: 700; }
+.timer { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dark); font-size: 20px; }
+.ctrl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.ctrl button { border: 1.5px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 8px 16px; font-weight: 700; min-height: 44px; }
+.ctrl button.play { background: var(--dark); border-color: var(--dark); color: #fff; min-width: 116px; }
+.ctrl .sp { margin-left: auto; }
+.ctrl label { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.ctrl select { flex: none; padding: 6px 8px; border-radius: 10px; font-size: 14px; }
+.ov { position: fixed; inset: 0; background: rgba(15, 40, 32, .55); display: grid; place-items: center; padding: 14px; z-index: 20; overflow-y: auto; }
+.panel { background: #fff; border-radius: 20px; padding: clamp(16px, 3vw, 28px); max-width: 640px; width: 100%; display: grid; gap: 12px; }
+.panel h2 { margin: 0; color: var(--dark); font-size: clamp(20px, 3.4vw, 26px); line-height: 1.35; }
+.panel p { margin: 0; }
+.panel ol, .panel ul { margin: 0; padding-left: 22px; }
+.tag { display: inline-block; background: var(--gold); color: #fff; font-weight: 700; border-radius: 999px; padding: 2px 14px; font-size: 14px; justify-self: start; }
+.note { color: var(--muted); font-size: 13px; }
+.memo { background: var(--pale); border-radius: 12px; padding: 10px 14px; }
+.memo dt { font-weight: 700; color: var(--dark); font-size: 14px; } .memo dd { margin: 0 0 8px; }
+.faq button { width: 100%; }
+/* ミラ（案内役） */
+.mira .mouth-talk { display: none; }
+.mira.talking .mouth-talk { display: block; animation: mouth .28s infinite alternate; transform-origin: 60px 78px; }
+.mira.talking .mouth-rest { display: none; }
+@keyframes mouth { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+.mira .eye { animation: blink 4.6s infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+.mira .bars rect { animation: bob 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom; }
+.mira .bars rect:nth-child(2) { animation-delay: .2s; } .mira .bars rect:nth-child(3) { animation-delay: .4s; }
+@keyframes bob { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.12); } }
+.mira .happy, .mira .think { display: none; }
+.mira[data-face=happy] .happy { display: block; } .mira[data-face=happy] .eye { display: none; }
+.mira[data-face=think] .think { display: block; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+@media (max-width: 560px) { .ctrl .sp { margin-left: 0; } .bubble { padding: 12px 14px; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <span class="brand">MIRADAS</span>
+    <span class="sec" id="sec"></span>
+    <span id="ttl" style="font-weight:700"></span>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="bar" id="bar" aria-label="すすみぐあい"></div>
+  <div class="stage" id="stage">
+    <img id="slide" alt="">
+    <div class="hl" id="hl" hidden></div>
+    <div class="hide-badge" id="badge" hidden><span>まず、予想してみよう</span></div>
+  </div>
+  <div class="talk">
+    <div class="avatar">
+      <svg class="mira" id="mira" viewBox="0 0 120 124" role="img" aria-label="案内役のミラ" data-face="normal">
+        <g class="bars"><rect x="43" y="14" width="8" height="12" rx="2" fill="#F28C28" opacity=".6"/><rect x="56" y="8" width="8" height="18" rx="2" fill="#F28C28" opacity=".8"/><rect x="69" y="2" width="8" height="24" rx="2" fill="#F28C28"/></g>
+        <ellipse cx="60" cy="72" rx="48" ry="46" fill="#2DB382"/>
+        <ellipse cx="60" cy="76" rx="37" ry="34" fill="#E2F7EE"/>
+        <circle cx="33" cy="84" r="6" fill="#F7B9A8" opacity=".8"/><circle cx="87" cy="84" r="6" fill="#F7B9A8" opacity=".8"/>
+        <ellipse class="eye" cx="45" cy="68" rx="5.5" ry="7.5" fill="#1F3D35"/><ellipse class="eye" cx="75" cy="68" rx="5.5" ry="7.5" fill="#1F3D35"/>
+        <g class="happy" fill="none" stroke="#1F3D35" stroke-width="4" stroke-linecap="round"><path d="M38 70q7-9 14 0"/><path d="M68 70q7-9 14 0"/></g>
+        <g class="think"><text x="96" y="34" font-size="24" font-weight="700" fill="#F28C28">?</text></g>
+        <path class="mouth-rest" d="M50 86q10 8 20 0" fill="none" stroke="#1F3D35" stroke-width="4" stroke-linecap="round"/>
+        <ellipse class="mouth-talk" cx="60" cy="88" rx="9" ry="8" fill="#C4483A"/>
+      </svg>
+      <div class="name" id="gname"></div>
+    </div>
+    <div class="bubble" id="bubble" aria-live="polite">
+      <div id="line"></div>
+      <div class="act" id="act"></div>
+    </div>
+  </div>
+  <div class="ctrl">
+    <button id="prev" aria-label="前のスライド">◀ もどる</button>
+    <button id="play" class="play">▶ さいせい</button>
+    <button id="next" aria-label="次のスライド">つぎへ ▶</button>
+    <button id="again">もう一度きく</button>
+    <button id="ask">？ しつもん</button>
+    <button id="memoB">メモ</button>
+    <span class="sp"></span>
+    <label><input type="checkbox" id="mute"> 音声なし</label>
+    <label>はやさ <select id="rate"><option value="0.85">ゆっくり</option><option value="1" selected>ふつう</option><option value="1.2">はやい</option></select></label>
+    <label>声 <select id="voice"></select></label>
+  </div>
+  <p class="note" id="foot"></p>
+</div>
+
+<div class="ov" id="ovStart">
+  <div class="panel">
+    <span class="tag">MIRADAS オンデマンド授業</span>
+    <h2 id="sTitle"></h2>
+    <p id="sLead"></p>
+    <ul id="sList"></ul>
+    <div class="row"><input type="text" id="nick" maxlength="8" placeholder="ニックネーム（書かなくてもOK・8文字まで）" autocomplete="off"></div>
+    <div class="row"><button class="btn go" id="start" style="flex:1">▶ はじめる</button><button class="btn" id="resume" hidden>つづきから</button></div>
+    <p class="note">音声が出ます。まわりに人がいるときは、イヤホンを使うか「音声なし」にしてください。ニックネームやメモは、この端末の中だけに保存され、外には送られません。</p>
+  </div>
+</div>
+
+<div class="ov" id="ovTeacher" hidden>
+  <div class="panel">
+    <span class="tag">ここは、先生といっしょに</span>
+    <h2 id="tTitle"></h2>
+    <ol id="tList"></ol>
+    <a class="btn main" id="tLink" target="_blank" rel="noopener" hidden></a>
+    <p class="note" id="tNote"></p>
+    <button class="btn go" id="tDone">おわったよ！ つづきへ ▶</button>
+  </div>
+</div>
+
+<div class="ov" id="ovAsk" hidden>
+  <div class="panel">
+    <h2>しつもんを えらんでね</h2>
+    <div class="faq" id="faq" style="display:grid;gap:8px"></div>
+    <button class="btn" id="askClose">とじる</button>
+    <p class="note">ここにない質問は、メモ用紙に書いておいて、先生に聞いてみよう。</p>
+  </div>
+</div>
+
+<div class="ov" id="ovMemo" hidden>
+  <div class="panel">
+    <h2 id="mTitle">きょうのメモ</h2>
+    <dl class="memo" id="memo"></dl>
+    <div class="row" id="endLinks"></div>
+    <div class="row"><button class="btn" id="memoClose" style="flex:1">とじる</button><button class="btn" id="restart">さいしょから</button></div>
+    <p class="note">このメモは、この端末の中だけに保存されています。先生に見せるときは、この画面を見せてください。</p>
+  </div>
+</div>
+
+<script>
+const LESSON = {"id": "okanemochi", "title": "お金持ちになるには？", "guide": "ミラ", "lead": "案内役のミラが、スライドを見せながら、声と吹き出しで授業を進めます。", "intro": ["メモ用紙と、えんぴつを用意しよう", "とちゅうで質問されたら、えらんだり、書いたりして答えてね", "「体験」の時間（2回）は、先生といっしょにやろう", "「？ しつもん」をおすと、ミラに質問できるよ"], "foot": "数字は2026年10月時点のもの。「例」「仮」の数字は、説明のための計算です。投資は、お金がへることもあります。特定の会社や商品をすすめるものではありません。", "memo": [{"key": "first", "label": "最初の考え：お金持ちになるには？"}, {"key": "road", "label": "お金持ちにいちばん近い道（予想）"}, {"key": "q1", "label": "予想：1年の給料の平均", "unit": "万円"}, {"key": "q2", "label": "予想：毎月、余るお金", "unit": "万円"}, {"key": "q3", "label": "予想：100万円を1年あずけた利息", "unit": "円"}, {"key": "fund", "label": "気になる投資信託の種類"}, {"key": "s361", "label": "スタッフの服が中国メーカーの理由（予想）"}, {"key": "last", "label": "今の考え（最初とくらべて）"}, {"key": "company", "label": "次回、知りたい会社"}], "endLinks": [{"label": "ミラキンをのぞいてみる", "url": "https://mirakin.jp/3min-mirakin/"}, {"label": "タイムトラベラー投資家であそぶ", "url": "https://mirakin-timetravelergame.netlify.app/"}], "faq": [{"q": "投資って、ギャンブルじゃないの？", "a": "ギャンブルは、だれかの負けが、だれかの勝ちになる。投資は、会社が成長すれば、みんなでふえる。ここがちがうんだ。ただし、投資もへることがあるよ。"}, {"q": "中学生でも投資できるの？", "a": "今の{NISA|ニーサ}は18才から。でも、0才から17才が使える「こども{NISA|ニーサ}」が、2027年に始まる予定だよ。今は、シミュレーターで練習するのがいちばん。"}, {"q": "どの会社を買えば、もうかるの？", "a": "それは、だれにもわからないんだ。だから、自分で会社や世の中を見て、考える力が大事。それを、これからいっしょに育てていこう。"}, {"q": "うちは貯金だけだけど、だめなの？", "a": "だめじゃないよ。すぐ使うお金や、もしものためのお金は、預金が安心。おうちの考え方を、大切にしてね。"}, {"q": "お金持ちになるのは、いいこと？", "a": "お金は、目的じゃなくて道具だよ。そのお金で何をしたいかを考えるのも、大事なテーマなんだ。"}], "slides": [{"img": "s01", "sec": "はじめに", "title": "お金持ちになるには？", "steps": [{"t": "say", "face": "happy", "text": "こんにちは、${nick}！ ぼくは、ミラ。今日の授業の案内役だよ。"}, {"t": "say", "text": "今日のテーマは、「お金持ちになるには？」。むずかしい言葉も出てくるけど、ぜんぶわからなくても大丈夫。"}, {"t": "say", "text": "図を見ながら、いっしょに考えていこう。とちゅうに「体験」が2回あるよ。そこは、先生といっしょにやってね。"}]}, {"img": "s02", "sec": "はじめに", "title": "今日の問い", "steps": [{"t": "say", "text": "まず、今日の問い。お金持ちになるには、どうすればいい？"}, {"t": "text", "key": "first", "ph": "例：たくさん はたらく", "text": "きみは、どう思う？ 思いついたことを書いてみて。メモ用紙にも、同じことを書いておこう。", "reply": "「${first}」だね。いいね！ 正解は1つじゃないよ。授業の最後に、もう一度見るから、覚えておいてね。", "skip": "まだ思いつかなくても大丈夫。授業の中で、いっしょに考えよう。"}]}, {"img": "s03", "sec": "はじめに", "title": "今日の流れ", "steps": [{"t": "say", "text": "今日の流れは、こんな感じ。前半は、お金のしくみを知る。まん中で、つみたてのシミュレーション。"}, {"t": "say", "text": "後半は、ニュースをお金の目で読んで、最後に、株の売り買いを体験するよ。"}]}, {"img": "s04", "sec": "知る", "title": "考えてみよう", "steps": [{"t": "ask", "key": "road", "text": "お金が入ってくる道は、大きく3つあるんだ。お金持ちに、いちばん近い道は、どれだと思う？", "options": [{"label": "A：たくさん はたらいて、給料をもらう", "reply": "がんばった分だけもらえる。大事な道だね。でも、1日は24時間。はたらく時間には、かぎりがあるよね。"}, {"label": "B：自分で会社をつくる", "reply": "社長だね！ 会社が大きくなると、もうけも大きくなる。でも、うまくいかないこともある、ちょうせんの道だよ。"}, {"label": "C：会社にお金を出す（投資する）", "reply": "投資をえらんだね。お金に、はたらいてもらう道だよ。くわしくは、このあと見ていこう。"}]}, {"t": "say", "text": "どれも、まちがいじゃないよ。3つの道のちがいを、図で見てみよう。"}]}, {"img": "s05", "sec": "知る", "title": "お金が入ってくる、3つの道", "faq": [{"q": "「会社にお金を出す」は、お金がないとできないの？", "a": "少ないお金でも、はじめられるよ。あとで、毎月1万円のシミュレーションをするから、たしかめてみよう。"}], "steps": [{"t": "say", "hl": [4.6, 33.7, 29.3, 58], "text": "1つ目は、はたらく。自分の時間を使って、給料をもらう道。"}, {"t": "say", "hl": [35.3, 33.7, 29.3, 58], "text": "2つ目は、会社をつくる。会社のもうけが、自分に入ってくる道。"}, {"t": "say", "hl": [66.1, 33.7, 29.3, 58], "text": "3つ目は、会社にお金を出す。株を買って、会社の成長を応援する道だよ。"}, {"t": "say", "text": "大人の多くは、1つ目だけ。でも、世界のお金持ちの多くは、2つ目や3つ目も持っているんだ。"}, {"t": "say", "text": "たとえば、自分でつくった会社の株を、たくさん持っている人たちだよ。"}]}, {"img": "s06", "sec": "知る", "title": "資本主義：会社のまわりを、お金が回る", "faq": [{"q": "株主って、だれでもなれるの？", "a": "なれるよ。株を買えば、その会社の持ち主の1人。きみがよく使う商品の会社の株主にも、なれるんだ。"}], "steps": [{"t": "say", "text": "会社のまわりでは、お金がぐるぐる回っているよ。"}, {"t": "say", "hl": [5.3, 38.3, 23.4, 27.3], "text": "はたらく人は、会社ではたらいて、給料をもらう。"}, {"t": "say", "hl": [37.9, 75.9, 24.1, 15.3], "text": "お客さんは、商品を買って、代金をはらう。"}, {"t": "say", "hl": [71.3, 38.3, 23.4, 27.3], "text": "そして、会社にお金を出した人。{株主（かぶぬし）|かぶぬし}っていうんだ。株主には、会社のもうけの一部が、配当や株の値上がりとして、もどってくる。"}, {"t": "say", "text": "お金を出した人が、もうけを受け取れる。このしくみを、{資本主義（しほんしゅぎ）|しほんしゅぎ}っていうよ。"}, {"t": "say", "face": "happy", "text": "じつは、会社の持ち主は、社長じゃなくて株主なんだ。株を買うと、きみも、その会社の持ち主の1人になれるよ。"}]}, {"img": "s07", "sec": "知る", "title": "予想しよう：3つの数字", "steps": [{"t": "say", "text": "ここで、3つの数字を予想してみよう。当たらなくていいよ。「このくらいかな」と考えることが大事。"}, {"t": "num", "key": "q1", "unit": "万円", "ph": "例：400", "text": "1問目。日本ではたらく人の、1年の給料の平均は、何万円くらい？", "reply": "${q1}万円だね。メモ用紙にも書いておこう。"}, {"t": "num", "key": "q2", "unit": "万円", "ph": "例：5", "text": "2問目。ひとり暮らしの大人。毎月の手取りは32万円。家賃や食費をはらうと、毎月いくら余ると思う？", "reply": "${q2}万円だね。"}, {"t": "num", "key": "q3", "unit": "円", "ph": "例：10000", "text": "3問目。銀行に100万円を、1年あずけると、利息はいくらもらえる？", "reply": "${q3}円だね。ありがとう！ 答えは、このあと順番に出てくるよ。"}]}, {"img": "s08", "sec": "知る", "title": "日本の平均年収は 487万円", "steps": [{"t": "reveal", "key": "q1", "answer": 487, "unit": "万円", "text": "1問目の答えは、487万円。過去最高なんだ。"}, {"t": "say", "text": "ただ、これは全員の平均。男の人と女の人、正社員とそうでない人で、大きくちがうよ。"}, {"t": "say", "face": "think", "text": "じゃあ、この487万円。ぜんぶ使えると思う？"}]}, {"img": "s09", "sec": "知る", "title": "手取りから、毎月 約9万円が余る（例）", "steps": [{"t": "say", "hl": [6.4, 40.6, 69.3, 11.2], "text": "じつは、ぜんぶはもらえない。税金や社会保険料を引くと、手もとにのこるのは、だいたい8割。約385万円だよ。"}, {"t": "say", "text": "12か月でわると、1か月に約32万円。ここから、家賃、食費、電気代、スマホ代をはらうと…。"}, {"t": "reveal", "key": "q2", "answer": 9, "unit": "万円", "hl": [67.8, 64, 25.7, 13.8], "text": "余るお金は、月に約9万円。これは1つの例だよ。"}, {"t": "say", "face": "think", "text": "この9万円を40年ためると、4,320万円。すごいね。でも、ためるだけで、いいのかな？"}]}, {"img": "s10", "sec": "知る", "title": "日本とアメリカ：お金の置き場所", "steps": [{"t": "ask", "blur": true, "key": "jpus", "text": "余ったお金を、どこに置いておくか。日本とアメリカをくらべるよ。株や投資信託に、たくさんお金を置いているのは、どっちの国だと思う？", "options": [{"label": "日本", "reply": "じつは、アメリカなんだ。図を見てみよう。"}, {"label": "アメリカ", "reply": "そのとおり！ 図を見てみよう。"}, {"label": "同じくらい", "reply": "じつは、大きくちがうんだ。図を見てみよう。"}]}, {"t": "say", "hl": [11.1, 39.7, 83, 16], "text": "日本は、家のお金の47%が、現金や預金。株や投資信託は24%。"}, {"t": "say", "hl": [11.1, 61, 83, 16], "text": "アメリカは、現金や預金は11.5%だけ。株や投資信託が54.6%。半分以上なんだ。"}, {"t": "say", "text": "お金の置き場所が、ぜんぜんちがうね。"}]}, {"img": "s11", "sec": "知る", "title": "20年で、アメリカは3.4倍・日本は1.4倍", "steps": [{"t": "ask", "blur": true, "key": "grow", "text": "じゃあ、この20年くらいで、家のお金はどれだけふえたかな。日本は1.4倍。アメリカは、何倍だと思う？", "options": [{"label": "1.5倍くらい", "reply": "もっと多いんだ。"}, {"label": "2倍くらい", "reply": "もっと多いんだ。"}, {"label": "3倍以上", "reply": "すごい、当たり！"}]}, {"t": "say", "text": "アメリカは3.4倍。イギリスは2.3倍。日本は1.4倍。お金の置き場所のちがいが、ふえ方のちがいになったんだ。"}, {"t": "say", "text": "ただし、理由はそれだけじゃないよ。お給料や人口のふえ方もちがう。投資さえすれば3.4倍になる、という意味ではないからね。"}]}, {"img": "s13", "sec": "知る", "title": "預金だけだと、買える量がへることも", "faq": [{"q": "じゃあ、貯金は意味がないの？", "a": "そんなことないよ。すぐ使うお金や、もしものためのお金は、預金が安心。使う予定のないお金をどうするか、という話なんだ。"}], "steps": [{"t": "reveal", "key": "q3", "answer": 4000, "unit": "円", "text": "3問目の答え。銀行に100万円を1年あずけると、利息は約4,000円。"}, {"t": "say", "text": "10年あずけても、ふえるのは約5万円。"}, {"t": "say", "text": "でも、物のねだんが、毎年2%ずつ上がると、今100万円の物は、10年後には122万円になる。"}, {"t": "say", "face": "think", "text": "お金の数字はへっていないのに、買える量がへってしまうんだ。"}, {"t": "say", "text": "お給料は上がりにくい。物のねだんは上がる。利息は小さい。だから、お金にも、はたらいてもらう。これが、投資が必要と言われる理由だよ。"}]}, {"img": "s14", "sec": "知る", "title": "投資ってなに？", "faq": [{"q": "会社がつぶれたら、どうなるの？", "a": "出したお金が、もどらないこともあるよ。だから、あとで出てくる「分けて持つ」が大事なんだ。"}], "steps": [{"t": "say", "text": "投資は、ギャンブルとはちがうよ。"}, {"t": "say", "text": "会社にお金を出す。会社は、そのお金で工場をつくったり、人をやとったり、研究したりする。"}, {"t": "say", "text": "いい商品が売れて、会社が大きくなる。もうけが出る。すると、お金を出した人にも、配当や株の値上がりで、もどってくる。"}, {"t": "say", "face": "happy", "text": "つまり投資は、会社の成長を応援して、いっしょに育つことなんだ。"}, {"t": "say", "text": "ただし、会社がうまくいかないと、お金がへることもある。ここは、とても大事だよ。"}]}, {"img": "s15", "sec": "知る", "title": "NISA：ふえた分に、税がかからない", "steps": [{"t": "ask", "blur": true, "key": "tax", "text": "投資で、お金が100万円ふえたとするよ。ふつうは、ふえた分に税金がかかる。いくらだと思う？", "options": [{"label": "税金は かからない", "reply": "じつは、かかるんだ。答えは、約20万円。"}, {"label": "約20万円", "reply": "正解！ ふえた分の、およそ20%が税金になるんだ。"}, {"label": "約50万円", "reply": "そこまでは多くないよ。答えは、約20万円。"}]}, {"t": "say", "text": "でも、{NISA|ニーサ}という口座なら、税金は0円。国が、みんな少しずつ投資をはじめよう、と用意したしくみだよ。"}, {"t": "say", "text": "つみたて投資枠は、1年に120万円まで。一生で1,800万円まで使える。"}, {"t": "say", "face": "happy", "text": "今は18才から。でも、0才から17才が使える「こども{NISA|ニーサ}」が、2027年に始まる予定なんだ。"}]}, {"img": "s16", "sec": "体験①", "title": "体験①：つみたてシミュレーション", "steps": [{"t": "say", "face": "happy", "text": "さあ、1回目の体験だよ。毎月1万円を、40年つみたてる。入れるお金は、ぜんぶで480万円。"}, {"t": "say", "text": "預金だと、いくらになる？ 投資で、年5%ずつ育ったら、いくらになる？ まず、予想をメモ用紙に書いてね。"}, {"t": "teacher", "text": "ここからは、先生にバトンタッチ。先生といっしょに、シミュレーターを動かしてみよう。", "title": "体験①：つみたてシミュレーション", "items": ["予想をメモ用紙に書く（預金なら？ 投資なら？）", "下のボタン（またはスライドのQR）で、シミュレーターを開く", "②の数字を動かす。「はじめる年れい」も変えてみる", "③「1回やってみる」を5回おして、結果をメモする"], "link": {"label": "つみたてシミュレーターを開く", "url": "https://ryutoinb.github.io/miradas-games/tsumitate-hvgmbdtxnp.html"}, "note": "先生へ：年5%は仮の数字です。「毎年同じにはならない」ことを、③で体験させてください。目安7分。", "back": "おかえり！ どうだった？ 答え合わせをしよう。"}]}, {"img": "s17", "sec": "知る", "title": "毎月1万円を、40年つづけると", "steps": [{"t": "say", "text": "入れたお金は480万円。預金だと、約531万円。"}, {"t": "say", "face": "happy", "text": "年5%で育つと、約1,526万円。3倍以上だね。"}, {"t": "say", "text": "ひみつは、{複利（ふくり）|ふくり}。ふえた分が、また次のお金を生むんだ。"}, {"t": "say", "text": "だから、早く始めるほど、時間が味方になる。中学生のきみには、たっぷり時間があるよ。"}, {"t": "say", "text": "ただし、年5%は仮の数字。毎年、同じようにふえるわけじゃないからね。"}]}, {"img": "s18", "sec": "知る", "title": "でも、下がる年もある", "faq": [{"q": "下がったら、やめた方がいい？", "a": "あわてて売ると、下がったところで終わりになってしまう。だから、すぐには使わないお金で、長く続けるのが大事と言われているよ。"}], "steps": [{"t": "say", "text": "シミュレーターの3番を思い出して。毎回、結果がちがったよね。"}, {"t": "say", "text": "本当は、上がる年もあれば、大きく下がる年もある。投資は、お金がへることもあるんだ。"}, {"t": "say", "text": "だから、3つの工夫をする。1つ目、長く続ける。2つ目、分けて持つ。3つ目、コツコツ同じ金額を積み立てる。"}, {"t": "say", "text": "それでも、ぜったいに損をしない方法はないよ。使う予定のあるお金は、投資に回さないこと。"}]}, {"img": "s19", "sec": "知る", "title": "投資信託ってなに？", "steps": [{"t": "say", "text": "「分けて持つ」を、1つでできる商品があるよ。{投資信託（とうししんたく）|とうししんたく}だ。"}, {"t": "say", "text": "みんなのお金を集めて、えらぶプロが、たくさんの会社の株を買う。"}, {"t": "say", "face": "happy", "text": "いろいろなおかずが入った、お弁当みたいなパッケージだね。1つ買うだけで、たくさんの会社に、少しずつお金を出せるんだ。"}]}, {"img": "s20", "sec": "知る", "title": "投資信託には、いろいろな種類がある", "faq": [{"q": "どれが、いちばんもうかるの？", "a": "それは、だれにもわからないんだ。だからこそ、自分で会社や世の中を見て、考える力が大事になるよ。"}], "steps": [{"t": "ask", "key": "fund", "text": "投資信託には、いろいろな種類があるよ。きみが気になるのは、どれ？", "reply": "それが気になるんだね。どうして気になったのか、理由をメモしておこう。", "options": [{"label": "日本の会社"}, {"label": "アメリカの会社"}, {"label": "世界中の会社"}, {"label": "テーマで選ぶ（AI・ゲームなど）"}, {"label": "国や会社に貸す（債券）"}, {"label": "ビルや土地（不動産）"}]}, {"t": "say", "text": "どのパッケージを選ぶかは、自分で決める。そして、パッケージの中身は「会社」。"}, {"t": "say", "face": "happy", "text": "だから、会社と世の中のことを知らないと、選べないんだ。ここが、今日いちばん大事なところだよ。"}]}, {"img": "s21", "sec": "ニュース", "title": "ニュースを読もう：アジア大会とお金", "steps": [{"t": "say", "text": "じゃあ、世の中を見る練習をしよう。2026年の秋、愛知と名古屋で、アジア大会がひらかれたね。スポーツの大会を、お金の目で見てみるよ。"}, {"t": "say", "text": "経済効果は、全国で約3.7兆円という試算。"}, {"t": "say", "text": "でも、かかるお金は、最初の計画の850億円から、{3,000億円台後半|さんぜんおくえんだい こうはん}へ。3倍以上になった。"}, {"t": "say", "text": "スポンサーからのお金は、約270億円。目標をこえた。チケットは、230万枚売る予定が、140万から160万枚の見通し。"}, {"t": "say", "face": "think", "text": "いい話と、心配な話が、両方あるね。じゃあ、このお金、だれがはらうんだろう？"}, {"t": "say", "text": "答えは、県や市の税金と、スポンサーやチケットのお金。そこで、スポンサーのうら話を2つ、しょうかいするよ。"}]}, {"img": "s22", "sec": "ニュース", "title": "うら話①：スポンサー集めの舞台うら", "faq": [{"q": "談合って、なんでダメなの？", "a": "競争がなくなって、ねだんが高くなるからだよ。大会のお金には税金も使われているから、みんなのお金がムダになってしまうんだ。"}], "steps": [{"t": "say", "text": "大きなスポーツ大会では、広告会社がスポンサーを集めるのが、ふつうだった。でも今回は、いつもの大きな広告会社がいなかったんだ。"}, {"t": "say", "text": "わけは、東京オリンピックの{談合（だんごう）|だんごう}という事件。ライバルの会社どうしで、こっそり仕事を分け合っていた。"}, {"t": "say", "text": "その結果、電通グループは、罰金3億円が決まった。博報堂なども有罪の判決を受けて、今も裁判が続いている。"}, {"t": "say", "text": "役所の仕事も、しばらく受けられなくなった。そして、たのむ予定だった電通が辞退した、と報道されているよ。"}, {"t": "say", "text": "そこで、名古屋の新東通信など、4つの会社のチームが引き受けた。組織委員会の人たちも、自分で会社を回ったんだ。"}, {"t": "say", "face": "happy", "text": "結果は、目標ごえ。信用をなくすと、仕事をなくす。会社にとって、信用は、いちばん大事な財産なんだね。"}]}, {"img": "s23", "sec": "ニュース", "title": "うら話②：スタッフの服は、中国の「361°」", "steps": [{"t": "ask", "blur": true, "key": "s361", "text": "もう1つのうら話。日本の大会なのに、スタッフやボランティアの服は、中国の{361°|スリーシックスワン}というメーカーだった。なぜだと思う？", "reply": "いい予想だね。じつは、スポンサーには2つのグループがあるんだ。", "options": [{"label": "いちばんお金を出したから"}, {"label": "先に、主催者のスポンサーに決まっていたから"}, {"label": "日本のメーカーが ことわったから"}]}, {"t": "say", "text": "1つは、大会の主催者のスポンサー。もう1つは、地元の組織委員会が集めたスポンサー。"}, {"t": "say", "text": "スポーツウェアは、主催者のスポンサーである{361°|スリーシックスワン}が、先に決まっていた。だから、スタッフの服は{361°|スリーシックスワン}。"}, {"t": "say", "text": "日本代表の選手の服は、日本のアシックスが作っているよ。こちらは、別の契約なんだ。"}, {"t": "say", "face": "think", "text": "ここからは、考察。スポンサーは、1つの業種に1社が基本。先に決まると、日本の同じ業種の会社は、入りにくくなる…かもしれないね。"}, {"t": "say", "face": "happy", "text": "同じニュースでも、しくみを知ると、見え方が変わるでしょ。"}]}, {"img": "s24", "sec": "ニュース", "title": "1つのニュースで、会社はどう動く？", "steps": [{"t": "say", "text": "ここまでの話を、投資の目で見てみよう。大きなスポーツ大会がひらかれる。このとき、会社の株は、どう動きそうかな？"}, {"t": "ask", "key": "n1", "text": "ホテルや旅行の会社は？", "options": [{"label": "上がりそう", "reply": "うん。泊まる人や旅行する人がふえると、売り上げがふえそうだね。じゃあ、大会が終わったあとは、どうなるかな？"}, {"label": "下がりそう", "reply": "なるほど。泊まる人がふえると、売り上げはふえそうだけど、大会が終わったあとは、元にもどるかもしれないね。"}, {"label": "わからない", "reply": "むずかしいよね。泊まる人がふえると、売り上げはふえそう。でも、大会が終わったあとは、どうなるかな？"}]}, {"t": "ask", "key": "n3", "text": "スポーツ用品の会社は？", "reply": "ここは、むずかしいところ。大会のスポンサーじゃなくても、選手がかつやくすると、同じシューズが売れることもあるんだ。", "options": [{"label": "上がりそう"}, {"label": "下がりそう"}, {"label": "わからない"}]}, {"t": "ask", "key": "n4", "text": "広告やイベントの会社は？", "reply": "仕事はふえそうだね。でも、さっきの事件みたいに、信用をなくすと、仕事がへることもある。", "options": [{"label": "上がりそう"}, {"label": "下がりそう"}, {"label": "わからない"}]}, {"t": "say", "face": "happy", "text": "正解は1つじゃないよ。大事なのは、「なぜそう思うか」を言えること。これが、企業を見る力なんだ。"}]}, {"img": "s25", "sec": "体験②", "title": "体験②：投資シミュレーターで売買しよう", "steps": [{"t": "say", "face": "happy", "text": "さあ、2回目の体験。今度は、本物の会社の株を、シミュレーターで買ってみよう。もちろん、本物のお金は使わないよ。"}, {"t": "teacher", "text": "ここも、先生にバトンタッチ。大事なのは、「なぜ、その会社？」だよ。", "title": "体験②：投資シミュレーターで売買しよう", "items": ["気になる会社を1社さがす（アジア大会のスポンサーや、身近な商品から）", "何をしている会社か、ひとことで言う", "買う理由をメモ用紙に書いて、買ってみる", "次回、ねだんの動きと理由をたしかめる"], "note": "先生へ：いつもの投資シミュレーターを使ってください。会社えらび3分・購入2分・理由2分が目安。特定の会社をすすめず、「理由」を引き出してください。", "back": "おかえり！ どの会社を買ったかな。「なぜ、その会社？」を言えたら、もう投資家の第一歩だよ。"}]}, {"img": "s26", "sec": "まとめ", "title": "次回につづく：会社と世の中を知ろう", "steps": [{"t": "say", "text": "今日のまとめ。お金が入ってくる道は、はたらく、会社をつくる、会社にお金を出す、の3つ。"}, {"t": "say", "text": "預金だけだと、買える量がへることもある。だから、お金にも、はたらいてもらう。"}, {"t": "say", "text": "そして、どの会社にお金を出すかを決めるには、会社と世の中を知る力がいる。"}, {"t": "say", "face": "happy", "text": "次回からは、大学生が本物の会社を取材した「ミラキン」の記事で、会社を見ていくよ。"}, {"t": "link", "text": "どんな会社？ どんな業界？ それぞれを深く知っていこう！", "links": [{"label": "ミラキンをのぞいてみる", "url": "https://mirakin.jp/3min-mirakin/"}]}]}, {"img": "s28", "sec": "まとめ", "title": "ふりかえり", "steps": [{"t": "say", "text": "最後に、ふりかえりをしよう。"}, {"t": "say", "need": "first", "text": "最初に、きみは「${first}」と書いたね。", "alt": "最初の問いは、「お金持ちになるには、どうすればいい？」だったね。"}, {"t": "text", "key": "last", "ph": "例：投資という道もあるとわかった", "text": "今は、どう思う？ 最初とくらべて、変わったところを書いてみて。メモ用紙には、色を変えて書き足そう。", "reply": "「${last}」だね。変わったところが、今日のきみの成長だよ。"}, {"t": "text", "key": "company", "ph": "例：ゲームの会社", "text": "次回、どんな会社のことを知りたい？", "reply": "いいね！ 先生にも伝えておこう。"}, {"t": "say", "face": "happy", "text": "これで、今日の授業はおしまい。さいごまで聞いてくれて、ありがとう。また次回、会おうね！"}]}]};
+const $ = s => document.querySelector(s);
+const KEY = 'miradas-od-' + LESSON.id;
+const S = { i: 0, k: 0, s: 0, run: 0, playing: false, started: false, ans: {}, nick: '', busy: false };
+const synth = window.speechSynthesis || null;
+let voices = [], voice = null;
+
+/* ---------- 保存 ---------- */
+function save() { try { localStorage.setItem(KEY, JSON.stringify({ i: S.i, ans: S.ans, nick: S.nick, v: voice ? voice.name : '' })); } catch (e) {} }
+function load() { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+
+/* ---------- 文章 ---------- */
+// {表示|よみ} … 画面には「表示」、声は「よみ」。${key} … 生徒が入れた答え。
+function fill(t) {
+  t = t.replace(/、\$\{nick\}/g, S.nick ? '、' + S.nick + 'さん' : '');   // ニックネームがなければ、呼びかけを省く
+  return t.replace(/\$\{(\w+)\}/g, (m, k) => k === 'nick' ? (S.nick || 'きみ') : (S.ans[k] != null && S.ans[k] !== '' ? S.ans[k] : '（まだ書いていないよ）'));
+}
+const disp = t => t.replace(/\{([^|}]*)\|([^}]*)\}/g, '$1');
+const spk = t => t.replace(/\{([^|}]*)\|([^}]*)\}/g, '$2').replace(/[「」『』（）()]/g, ' ');
+const sentences = t => (fill(t).match(/[^。！？!?]+[。！？!?]*[」』）)]*/g) || [fill(t)]).map(x => x.trim()).filter(Boolean);
+
+/* ---------- 声 ---------- */
+function pickVoices() {
+  if (!synth) return;
+  voices = synth.getVoices().filter(v => /^ja/i.test(v.lang));
+  const want = [/Nanami/i, /Google/i, /Kyoko|O-ren|Otoya/i, /Sayaka|Haruka|Ayumi|Ichiro/i];
+  const saved = (load() || {}).v;
+  voice = voices.find(v => v.name === saved) || want.map(r => voices.find(v => r.test(v.name))).find(Boolean) || voices[0] || null;
+  const sel = $('#voice'); sel.innerHTML = '';
+  voices.forEach(v => { const o = document.createElement('option'); o.value = v.name; o.textContent = v.name.replace(/Microsoft |Online \(Natural\) - Japanese \(Japan\)|Google /g, '').trim() || v.name; if (voice && v.name === voice.name) o.selected = true; sel.append(o); });
+  if (!voices.length) { const o = document.createElement('option'); o.textContent = '（この端末には日本語の声がありません）'; sel.append(o); }
+}
+if (synth) { pickVoices(); synth.onvoiceschanged = pickVoices; }
+function speak(text, run) {
+  return new Promise(res => {
+    const say = spk(text), mira = $('#mira');
+    const muted = $('#mute').checked || !synth || !voice;
+    const rate = +$('#rate').value;
+    let done = false;
+    const fin = () => { if (done) return; done = true; clearTimeout(wd); mira.classList.remove('talking'); res(); };
+    const est = Math.max(1400, say.length * 190 / rate);
+    let wd;
+    mira.classList.add('talking');
+    if (muted) { wd = setTimeout(fin, est * 1.15); return; }
+    const u = new SpeechSynthesisUtterance(say);
+    u.voice = voice; u.lang = 'ja-JP'; u.rate = rate; u.pitch = 1.25;
+    u.onend = fin; u.onerror = fin;
+    wd = setTimeout(() => { try { synth.cancel(); } catch (e) {} fin(); }, est * 2.2 + 4000);  // 声が止まってしまったときの保険
+    try { synth.cancel(); synth.speak(u); } catch (e) { fin(); }
+  });
+}
+function stopVoice() { if (synth) { try { synth.cancel(); } catch (e) {} } $('#mira').classList.remove('talking'); }
+
+/* ---------- 画面 ---------- */
+const slideOf = () => LESSON.slides[S.i];
+function face(f) { $('#mira').dataset.face = f || 'normal'; }
+function setLine(t, cls) { $('#line').className = cls || ''; $('#line').textContent = disp(t); }
+function clearAct() { $('#act').innerHTML = ''; }
+function highlight(h) {
+  const el = $('#hl');
+  if (!h) { el.hidden = true; return; }
+  el.hidden = false; el.style.left = h[0] + '%'; el.style.top = h[1] + '%'; el.style.width = h[2] + '%'; el.style.height = h[3] + '%';
+}
+function blur(on) { $('#slide').classList.toggle('blur', !!on); $('#badge').hidden = !on; }
+function drawTop() {
+  const sl = slideOf();
+  $('#sec').textContent = sl.sec; $('#ttl').textContent = sl.title; $('#count').textContent = (S.i + 1) + ' / ' + LESSON.slides.length;
+  $('#slide').src = 'slides/' + sl.img + '.png'; $('#slide').alt = sl.title;
+  const bar = $('#bar'); bar.innerHTML = '';
+  LESSON.slides.forEach((x, n) => {
+    const b = document.createElement('button');
+    b.className = (n < S.i ? 'done' : n === S.i ? 'now' : '') + (x.steps.some(s => s.t === 'teacher') ? ' teacher' : '');
+    b.title = (n + 1) + '. ' + x.title; b.setAttribute('aria-label', b.title);
+    b.onclick = () => go(n);
+    bar.append(b);
+  });
+  $('#play').textContent = S.playing ? '⏸ とめる' : '▶ さいせい';
+}
+function btn(label, cls, fn) { const b = document.createElement('button'); b.className = cls; b.textContent = label; b.onclick = fn; return b; }
+
+/* ---------- すすめる ---------- */
+async function sayAll(text, run, cls) {
+  const ss = sentences(text);
+  for (let n = S.s; n < ss.length; n++) {
+    if (run !== S.run) return false;
+    S.s = n; setLine(ss[n], cls);
+    await speak(ss[n], run);
+    if (run !== S.run) return false;
+    await wait(220);
+  }
+  S.s = 0;
+  return run === S.run;
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function waitUser(build) { return new Promise(res => { clearAct(); build(res); }); }
+
+async function runStep() {
+  const run = ++S.run, sl = slideOf(), st = sl.steps[S.k];
+  if (!st) return nextSlide(run);
+  drawTop(); clearAct(); face(st.face); highlight(st.hl); blur(st.blur);
+  if (st.t === 'say') {
+    if (st.need && (S.ans[st.need] == null || S.ans[st.need] === '')) { if (st.alt) { if (!(await sayAll(st.alt, run))) return; } }
+    else if (!(await sayAll(st.text, run))) return;
+  } else if (st.t === 'ask') {
+    face('think');
+    if (!(await sayAll(st.text, run, 'q'))) return;
+    const pick = await waitUser(res => {
+      const box = document.createElement('div'); box.className = 'opts';
+      st.options.forEach(o => box.append(btn(o.label, '', () => res(o))));
+      $('#act').append(box);
+    });
+    if (run !== S.run) return;
+    S.ans[st.key] = pick.label; save(); clearAct(); blur(false); face('happy');
+    const rep = pick.reply || st.reply;
+    if (rep && !(await sayAll(rep, run))) return;
+  } else if (st.t === 'num' || st.t === 'text') {
+    face('think');
+    if (!(await sayAll(st.text, run, 'q'))) return;
+    const val = await waitUser(res => {
+      const row = document.createElement('div'); row.className = 'row';
+      const inp = document.createElement('input'); inp.type = st.t === 'num' ? 'number' : 'text';
+      if (st.t === 'num') { inp.inputMode = 'decimal'; inp.min = 0; } else inp.maxLength = 60;
+      inp.placeholder = st.ph || ''; inp.value = S.ans[st.key] != null ? S.ans[st.key] : '';
+      const ok = btn('これでOK', 'btn go', () => res(inp.value.trim()));
+      inp.onkeydown = e => { if (e.key === 'Enter') ok.click(); };
+      row.append(inp);
+      if (st.unit) { const u = document.createElement('span'); u.className = 'unit'; u.textContent = st.unit; row.append(u); }
+      row.append(ok, btn('とばす', 'btn', () => res('')));
+      $('#act').append(row); setTimeout(() => inp.focus({ preventScroll: true }), 50);
+    });
+    if (run !== S.run) return;
+    S.ans[st.key] = val; save(); clearAct(); blur(false); face('happy');
+    const rep = val === '' ? (st.skip || 'あとで考えても大丈夫だよ。') : (st.reply || '');
+    if (rep && !(await sayAll(rep, run))) return;
+  } else if (st.t === 'reveal') {
+    const v = parseFloat(S.ans[st.key]);
+    let t = st.text;
+    if (!isNaN(v)) {
+      const r = v / st.answer;
+      t += ' きみの予想は、' + S.ans[st.key] + st.unit + 'だったね。' + (r > 0.8 && r < 1.25 ? 'すごい、ほとんどぴったり！' : r > 0.5 && r < 2 ? 'おしい！ いい線いってるよ。' : 'けっこうちがったね。でも、予想してから見ると、ちゃんと頭にのこるんだ。');
+      face(r > 0.8 && r < 1.25 ? 'happy' : 'normal');
+    }
+    if (!(await sayAll(t, run))) return;
+  } else if (st.t === 'write') {
+    if (!(await sayAll(st.text, run, 'q'))) return;
+    await waitUser(res => {
+      let left = st.sec || 60;
+      const tm = document.createElement('span'); tm.className = 'timer';
+      const tick = () => { tm.textContent = 'のこり ' + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); };
+      tick();
+      const id = setInterval(() => { if (run !== S.run) return clearInterval(id); if (S.playing) { left--; tick(); if (left <= 0) { clearInterval(id); res(); } } }, 1000);
+      const row = document.createElement('div'); row.className = 'row';
+      row.append(tm, btn('書けた！', 'btn go', () => { clearInterval(id); res(); }));
+      $('#act').append(row);
+    });
+    if (run !== S.run) return;
+  } else if (st.t === 'teacher') {
+    if (st.text && !(await sayAll(st.text, run))) return;
+    await waitUser(res => {
+      $('#tTitle').textContent = st.title;
+      $('#tList').innerHTML = ''; st.items.forEach(x => { const li = document.createElement('li'); li.textContent = x; $('#tList').append(li); });
+      const a = $('#tLink'); a.hidden = !st.link; if (st.link) { a.href = st.link.url; a.textContent = st.link.label; }
+      $('#tNote').textContent = st.note || '';
+      $('#ovTeacher').hidden = false;
+      $('#tDone').onclick = () => { $('#ovTeacher').hidden = true; res(); };
+    });
+    if (run !== S.run) return;
+    face('happy');
+    if (st.back && !(await sayAll(st.back, run))) return;
+  } else if (st.t === 'link') {
+    if (!(await sayAll(st.text, run))) return;
+    const row = document.createElement('div'); row.className = 'row';
+    st.links.forEach(l => { const a = document.createElement('a'); a.className = 'btn main'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l.label; row.append(a); });
+    $('#act').append(row);
+    await wait(1200);
+    if (run !== S.run) return;
+  }
+  if (run !== S.run) return;
+  S.k++; S.s = 0;
+  if (st.t !== 'link') await wait(260);
+  if (run === S.run) runStep();
+}
+async function nextSlide(run) {
+  if (S.i >= LESSON.slides.length - 1) { S.playing = false; drawTop(); return showMemo(true); }
+  await wait(650);
+  if (run !== S.run) return;
+  S.i++; S.k = 0; S.s = 0; save(); runStep();
+}
+function go(n) { stopVoice(); S.run++; S.i = Math.max(0, Math.min(LESSON.slides.length - 1, n)); S.k = 0; S.s = 0; save(); S.playing = true; runStep(); }
+function toggle() {
+  if (!S.started) return;
+  if (S.playing) {
+    S.playing = false; S.run++; stopVoice(); drawTop();
+    const st = slideOf().steps[S.k];
+    if (st && st.t !== 'say') S.s = 0;   // 質問のとちゅうで止めたら、質問の最初から言いなおす
+  }
+  else { S.playing = true; runStep(); }
+}
+
+/* ---------- しつもん・メモ ---------- */
+function openAsk() {
+  const was = S.playing; if (was) toggle();
+  const list = (slideOf().faq || []).concat(LESSON.faq || []);
+  const box = $('#faq'); box.innerHTML = '';
+  list.forEach(f => box.append(btn(f.q, 'btn', async () => {
+    $('#ovAsk').hidden = true; clearAct(); highlight(null); face('happy');
+    const run = ++S.run; S.s = 0; S.playing = true; drawTop();
+    if (!(await sayAll('いい質問だね。' + f.a, run))) return;
+    S.s = 0; S.playing = false; drawTop();
+    $('#act').append(btn('▶ 授業のつづきにもどる', 'btn go', () => { S.playing = true; runStep(); }));
+  })));
+  $('#ovAsk').hidden = false;
+}
+function showMemo(end) {
+  const dl = $('#memo'); dl.innerHTML = '';
+  LESSON.memo.forEach(m => { const v = S.ans[m.key]; if (v == null || v === '') return; const dt = document.createElement('dt'); dt.textContent = m.label; const dd = document.createElement('dd'); dd.textContent = v + (m.unit || ''); dl.append(dt, dd); });
+  if (!dl.children.length) dl.innerHTML = '<dd>まだ、メモはありません。</dd>';
+  $('#mTitle').textContent = end ? 'おつかれさま！ きょうのメモ' : 'きょうのメモ';
+  const el = $('#endLinks'); el.innerHTML = '';
+  if (end) (LESSON.endLinks || []).forEach(l => { const a = document.createElement('a'); a.className = 'btn main'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l.label; a.style.flex = '1'; el.append(a); });
+  $('#ovMemo').hidden = false;
+}
+
+/* ---------- はじめ ---------- */
+$('#gname').textContent = LESSON.guide;
+$('#sTitle').textContent = LESSON.title; $('#sLead').textContent = LESSON.lead;
+LESSON.intro.forEach(x => { const li = document.createElement('li'); li.textContent = x; $('#sList').append(li); });
+$('#foot').textContent = LESSON.foot;
+const old = load();
+if (old && old.i > 0) { $('#resume').hidden = false; $('#nick').value = old.nick || ''; }
+function begin(resume) {
+  S.nick = $('#nick').value.trim(); S.started = true; S.playing = true;
+  if (resume && old) { S.i = old.i; S.ans = old.ans || {}; } else { S.i = 0; S.ans = {}; }
+  S.k = 0; S.s = 0; save(); $('#ovStart').hidden = true;
+  if (synth) { try { synth.cancel(); synth.resume(); } catch (e) {} }
+  runStep();
+}
+$('#start').onclick = () => begin(false);
+$('#resume').onclick = () => begin(true);
+$('#play').onclick = toggle;
+$('#next').onclick = () => go(S.i + 1);
+$('#prev').onclick = () => go(S.i - 1);
+$('#again').onclick = () => { if (S.started) { stopVoice(); S.run++; S.s = 0; S.playing = true; runStep(); } };
+$('#ask').onclick = () => { if (S.started) openAsk(); };
+$('#askClose').onclick = () => { $('#ovAsk').hidden = true; };
+$('#memoB').onclick = () => showMemo(false);
+$('#memoClose').onclick = () => { $('#ovMemo').hidden = true; };
+$('#restart').onclick = () => { try { localStorage.removeItem(KEY); } catch (e) {} location.reload(); };
+$('#voice').onchange = e => { voice = voices.find(v => v.name === e.target.value) || voice; save(); };
+$('#mute').onchange = () => { if ($('#mute').checked) stopVoice(); };
+document.addEventListener('keydown', e => {
+  if (/INPUT|SELECT|TEXTAREA/.test(e.target.tagName) || !S.started) return;
+  if (e.key === ' ') { e.preventDefault(); toggle(); } else if (e.key === 'ArrowRight') go(S.i + 1); else if (e.key === 'ArrowLeft') go(S.i - 1);
+});
+document.addEventListener('visibilitychange', () => { if (document.hidden && S.playing) toggle(); });
+drawTop(); setLine('「はじめる」をおしてね。');
+</script>
+</body>
+</html>
